@@ -2,7 +2,7 @@
  * task1.h
  *
  *  Created on: 25 Aug 2020
- *      Author: linus
+ *  Author: ARIS / Linus Stoeckli
  */
 
 #ifndef INC_LED_H_

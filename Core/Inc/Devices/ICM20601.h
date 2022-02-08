@@ -1,5 +1,6 @@
 // ICM-20601 Device Library
 // Author: Luca Jost
+// Adapted by Linus Stoeckli (5.2.2022)
 // 11.06.2020
 
 

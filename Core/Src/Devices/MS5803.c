@@ -1,8 +1,6 @@
-/*
- * ms5803.c
- *
+/* *
  *  Created on: 29 Aug 2020
- *      Author: linus
+ *  Author: ARIS / Linus Stoeckli
  */
 
 

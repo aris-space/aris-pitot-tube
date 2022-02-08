@@ -3,6 +3,7 @@
   ******************************************************************************
   * File Name          : freertos.c
   * Description        : Code for freertos applications
+  * adapted by		   : ARIS / Linus Stoeckli
   ******************************************************************************
   * @attention
   *

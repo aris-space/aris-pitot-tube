@@ -1,8 +1,6 @@
-/*
- * SD.h
- *
+/* *
  *  Created on: Sep 14, 2020
- *      Author: linus
+ *  Author: ARIS / Linus Stoeckli
  */
 
 #ifndef INC_SD_H_

@@ -1,8 +1,6 @@
-/*
- * task1.c
- *
+/* *
  *  Created on: 25 Aug 2020
- *      Author: linus
+ *  Author: ARIS / Linus Stoeckli
  */
 
 #include "devices/LED.h"

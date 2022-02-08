@@ -2,7 +2,7 @@
  * MS5803.h
  *
  *  Created on: 17 Jun 2020
- *      Author: linus
+ *  Author: ARIS / Linus Stoeckli
  */
 
 

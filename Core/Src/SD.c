@@ -1,8 +1,6 @@
-/*
- * SD.c
- *
+/* *
  *  Created on: Sep 14, 2020
- *      Author: linus
+ *  Author: ARIS / Linus Stoeckli
  */
 
 #include "SD.h"
