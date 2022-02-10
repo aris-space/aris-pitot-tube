@@ -1,0 +1,8 @@
+
+Debug/
+
+.DS_Store
+
+*.launch
+
+*.ld
