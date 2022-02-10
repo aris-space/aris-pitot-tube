@@ -6,3 +6,7 @@ Debug/
 *.launch
 
 *.ld
+
+.mxproject
+
+.settings/
