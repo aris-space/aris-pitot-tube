@@ -17,6 +17,7 @@
     .cs_port = SPI1_CS_GPIO_Port, \
     .cs_pin = SPI1_CS_Pin, \
     .spi_bus = &hspi1, \
+    .active = 1, \
     .accel_dlpf = ICM20601_ACCEL_DLPF_10_2_HZ, \
 	.accel_g = ICM20601_ACCEL_RANGE_32G, \
 	.gyro_dlpf = ICM20601_GYRO_DLPF_10_HZ, \
@@ -154,6 +155,7 @@ typedef struct icm20601_dev {
 	GPIO_TypeDef *cs_port;
 	uint16_t cs_pin;
 	SPI_HandleTypeDef* spi_bus;
+	uint8_t active;
 	// Sensor Configuration
 	enum icm20601_accel_dlpf accel_dlpf;
 	enum icm20601_accel_g accel_g;
@@ -180,5 +182,8 @@ extern void icm20601_read_gyro_raw(struct icm20601_dev * dev, int16_t *gyro);
 extern void icm20601_read_temp_raw(struct icm20601_dev * dev, int16_t *temp);
 
 extern void icm20601_read_data(struct icm20601_dev * dev, float *buf);
+
+extern float _get_accel_sensitivity(enum icm20601_accel_g accel_g);
+extern float _get_gyro_sensitivity(enum icm20601_gyro_dps gyro_dps);
 
 #endif

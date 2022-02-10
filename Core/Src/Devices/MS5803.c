@@ -64,6 +64,7 @@ uint8_t ms5803_init(struct ms5803_dev * dev)
 
 	buf[0] = 0x44;
 	HAL_I2C_Master_Transmit(dev->i2c_bus, dev->addr, buf, 1, dev->delay);
+	osDelay(3);
 	// need to wait 3 ms
 	return 1;
 }

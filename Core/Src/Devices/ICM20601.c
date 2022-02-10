@@ -191,6 +191,7 @@ int8_t icm20601_standby(struct icm20601_dev * dev) {
 	uint8_t tmp = 0;
 	uint8_t r [1] = {0};
 
+    dev->active = 0;
 
 	_icm_read_bytes(dev, REG_PWR_MGMT_1, r, 1);
     printf("read  REG_PWR_MGMT_1: %d \n", r[0]);
@@ -268,8 +269,6 @@ int8_t icm20601_standby(struct icm20601_dev * dev) {
 	_icm_read_bytes(dev, 0x68, r, 1);
     osDelay(1);
     printf("read  0x68: %d \n", r[0]);
-
-
 
     return 1;
 }

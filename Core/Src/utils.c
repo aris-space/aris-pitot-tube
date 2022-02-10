@@ -9,20 +9,25 @@
 #include "utils.h"
 #include <math.h>
 
-float launch_detect_buffer[LD_LEN] = {0.0};
+float idle_detect_buffer[IDLE_DETECT_LEN] = {0.0};
 
-uint8_t launch_detect(float * a){
-	for (int i = 1; i < LD_LEN; i++){
-		launch_detect_buffer[i-1] = launch_detect_buffer[i];
+
+uint8_t device_is_idle(float * a){
+
+	// TODO: include gyro
+
+	for (int i = 1; i < IDLE_DETECT_LEN; i++){
+		idle_detect_buffer[i-1] = idle_detect_buffer[i];
 	}
-	launch_detect_buffer[LD_LEN-1] = sqrtf(a[1]*a[1] + a[2]*a[2] + a[3]*a[3]);
+	idle_detect_buffer[IDLE_DETECT_LEN-1] = sqrtf(a[1]*a[1] + a[2]*a[2] + a[3]*a[3]);
 	float sum_a = 0.0;
-	for (int i = 0; i < LD_LEN; i++){
-		sum_a += launch_detect_buffer[i];
+	for (int i = 0; i < IDLE_DETECT_LEN; i++){
+		sum_a += idle_detect_buffer[i];
 	}
-	sum_a /= (float)LD_LEN;
+	sum_a /= (float)IDLE_DETECT_LEN;
 
-	// if average of acceleration over 5 measurements is higher than 4G, launch has been detected.
-	if (sum_a >= 20) return 1;
+	// if average of acceleration over 5 measurements is around 1G, idle has been detected.
+	if ((sum_a <= 1.1) && (sum_a >= 0.9)) return 1;
 	return 0;
 }
+

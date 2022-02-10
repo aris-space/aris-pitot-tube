@@ -168,6 +168,13 @@ standard names. */
 
 /* USER CODE BEGIN Defines */
 /* Section where parameter definitions can be added (for instance, to override default ones in FreeRTOS.h) */
+
+#define SAVE_INTERVAL 10
+#define BARO_INTERVAL 10
+#define IMU_INTERVAL 10
+#define TEMP_INTERVAL 10
+#define CHECK_IDLE_INTERVAL 100
+
 /* USER CODE END Defines */
 
 #endif /* FREERTOS_CONFIG_H */

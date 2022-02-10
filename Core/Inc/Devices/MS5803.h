@@ -16,6 +16,7 @@
   { \
     .addr = 0x76 << 1, \
 	.i2c_bus = &hi2c1, \
+	.active = 1, \
 	.delay = 100, \
   }
 
@@ -23,6 +24,7 @@
   { \
     .addr = 0x77 << 1, \
 	.i2c_bus = &hi2c1, \
+	.active = 1, \
 	.delay = 100, \
   }
 
@@ -39,6 +41,7 @@ typedef struct ms5803_dev {
 	// Hardware Configuration
 	uint8_t addr;
 	I2C_HandleTypeDef* i2c_bus;
+	uint8_t active;
 	uint8_t delay;
 	uint16_t cal[6];
 	uint32_t D1;
