@@ -7,7 +7,6 @@
 
 
 #include "utils.h"
-#include "Devices/ICM20601.h"
 #include <math.h>
 
 float idle_detect_buffer[IDLE_DETECT_LEN] = {0.0};
