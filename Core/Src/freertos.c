@@ -271,7 +271,7 @@ void StartDefaultTask(void *argument)
   for(;;)
   {
 	// if average of last 2048 is < 1.1g and > 0.9g and gyros not moving then go into good_night_mode
-	if (device_is_idle(a) == 1)
+	if (device_is_idle(&LOG, &DATA) == 1)
 	{
 		good_night_mode = 1;
 	}
@@ -290,6 +290,9 @@ void StartDefaultTask(void *argument)
 void StartAccelTask(void *argument)
 {
   /* USER CODE BEGIN StartAccelTask */
+  float accel_temperature = 0;
+  int16_t accel_raw[3] = {0};
+  int16_t gyro_raw[3] = {0};
   /* Infinite loop */
   for(;;)
   {
@@ -314,11 +317,17 @@ void StartAccelTask(void *argument)
     	// resets up on wake-up
 
     } else {
-    	icm20601_read_data(&IMU, a);
-    	DATA.accel_t = (int16_t)(a[0] * 100);
-    	DATA.accel_x = (int16_t)(a[1] * 100);
-    	DATA.accel_y = (int16_t)(a[2] * 100);
-    	DATA.accel_z = (int16_t)(a[3] * 100);
+    	if (DEBUG_PRINT == 1) icm20601_read_data(&IMU, a);
+    	icm20601_read_accel_raw(&IMU, accel_raw);
+    	icm20601_read_gyro_raw(&IMU, gyro_raw);
+    	icm20601_read_temp(&IMU, &accel_temperature);
+    	DATA.accel_t = (int16_t)(accel_temperature * 100);
+    	DATA.accel_x = accel_raw[0];
+    	DATA.accel_y = accel_raw[1];
+    	DATA.accel_z = accel_raw[2];
+    	DATA.gyro_x = gyro_raw[0];
+    	DATA.gyro_y = gyro_raw[1];
+    	DATA.gyro_z = gyro_raw[2];
     }
 
     osDelay(IMU_INTERVAL);
@@ -358,12 +367,12 @@ void StartBaroTask(void *argument)
 			DATA.baro2_D1 = BARO2.D1;
 			DATA.baro2_D2 = BARO2.D2;
 
-			ms5803_convert(&BARO1, &p1, &t1);
-			ms5803_convert(&BARO2, &p2, &t2);
+			if (DEBUG_PRINT == 1) ms5803_convert(&BARO1, &p1, &t1);
+			if (DEBUG_PRINT == 1) ms5803_convert(&BARO2, &p2, &t2);
   	  }
 
    	  osDelay(BARO_INTERVAL);
-   	  toggle(&RDY);
+   	  toggle(&STAT);
   }
   /* USER CODE END StartBaroTask */
 }
@@ -383,8 +392,8 @@ void StartTempTask(void *argument)
   {
     if (good_night_mode == 0){
     	mcp9600_read(&TEMP, T);
-    	DATA.temp_td = (int16_t)(T[1]* 100);
-    	DATA.temp_th = (int16_t)(T[0]* 100);
+    	DATA.temp_td = (int16_t)(T[1] * 100);
+    	DATA.temp_th = (int16_t)(T[0] * 100);
     }
 
     osDelay(TEMP_INTERVAL);
@@ -420,10 +429,10 @@ void StartSDTask(void *argument)
 
 		  res = write_to_file(&DATA, &buffer_size);
 		  if (buffer_size > WRITE_BUFFER_SIZE){
-			  turn_on(&STAT);
+			  turn_on(&RDY);
 			  res = flush_buffer();
 			  buffer_size = 0;
-			  turn_off(&STAT);
+			  turn_off(&RDY);
 		  }
 
 		  line_counter ++;

@@ -7,19 +7,26 @@
 
 
 #include "utils.h"
+#include "Devices/ICM20601.h"
 #include <math.h>
 
 float idle_detect_buffer[IDLE_DETECT_LEN] = {0.0};
 
 
-uint8_t device_is_idle(float * a){
+uint8_t device_is_idle(log_t * LOG, data_t * DATA){
 
 	// TODO: include gyro
+	float a[3] = {0.0};
+
+    a[0] = ((float) DATA->accel_x) / LOG->accel_sens;
+    a[1] = ((float) DATA->accel_y) / LOG->accel_sens;
+    a[2] = ((float) DATA->accel_z) / LOG->accel_sens;
+
 
 	for (int i = 1; i < IDLE_DETECT_LEN; i++){
 		idle_detect_buffer[i-1] = idle_detect_buffer[i];
 	}
-	idle_detect_buffer[IDLE_DETECT_LEN-1] = sqrtf(a[1]*a[1] + a[2]*a[2] + a[3]*a[3]);
+	idle_detect_buffer[IDLE_DETECT_LEN-1] = sqrtf(a[0]*a[0] + a[1]*a[1] + a[2]*a[2]);
 	float sum_a = 0.0;
 	for (int i = 0; i < IDLE_DETECT_LEN; i++){
 		sum_a += idle_detect_buffer[i];

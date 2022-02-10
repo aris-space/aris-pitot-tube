@@ -181,6 +181,8 @@ extern void icm20601_read_gyro_raw(struct icm20601_dev * dev, int16_t *gyro);
 
 extern void icm20601_read_temp_raw(struct icm20601_dev * dev, int16_t *temp);
 
+extern void icm20601_read_temp(struct icm20601_dev * dev, float *temp);
+
 extern void icm20601_read_data(struct icm20601_dev * dev, float *buf);
 
 extern float _get_accel_sensitivity(enum icm20601_accel_g accel_g);

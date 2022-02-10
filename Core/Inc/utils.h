@@ -19,6 +19,9 @@
     .accel_x = 0, \
     .accel_y = 0, \
     .accel_z = 0, \
+	.gyro_x = 0, \
+    .gyro_y = 0, \
+    .gyro_z = 0, \
     .accel_t = 2500, \
 	.baro1_D1 = 0, \
 	.baro1_D2 = 0, \
@@ -71,6 +74,9 @@ typedef struct data_container {
 	int16_t accel_y;
 	int16_t accel_z;
 	int16_t accel_t;
+	int16_t gyro_x;
+	int16_t gyro_y;
+	int16_t gyro_z;
 	uint32_t baro1_D1;
 	uint32_t baro1_D2;
 	uint32_t baro2_D1;
@@ -79,6 +85,6 @@ typedef struct data_container {
 	int16_t temp_td;
 } data_t;
 
-uint8_t device_is_idle(float * a);
+uint8_t device_is_idle(log_t * LOG, data_t * DATA);
 
 #endif /* INC_UTILS_H_ */
