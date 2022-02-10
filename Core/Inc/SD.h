@@ -27,10 +27,8 @@ FRESULT get_file_numbers(uint16_t *cnt1, uint16_t *cnt2);
 FRESULT find_next_file_name(char *file_name);
 FRESULT open_file(char *file_name);
 FRESULT close_file(void);
-FRESULT write_log_file(char *file_name, log_t * log, uint16_t * buffer_size);
-FRESULT write_to_file(data_t * data, uint16_t * buffer_size);
+FRESULT write_log_file(char *file_name, log_t *log, uint16_t *buffer_size);
+FRESULT write_to_file(data_t *data, uint16_t *buffer_size);
 FRESULT flush_buffer();
-
-
 
 #endif /* INC_SD_H_ */

@@ -10,7 +10,6 @@
 
 #include "main.h"
 
-
 #define STAT_INIT() \
   { \
     .LED_port = STAT_GPIO_Port, \
@@ -31,9 +30,8 @@ typedef struct LED_dev {
 	uint16_t LED_pin;
 } LED;
 
-extern void toggle(struct LED_dev * ctrl);
-extern void turn_on(struct LED_dev * ctrl);
-extern void turn_off(struct LED_dev * ctrl);
-
+extern void toggle(struct LED_dev *ctrl);
+extern void turn_on(struct LED_dev *ctrl);
+extern void turn_off(struct LED_dev *ctrl);
 
 #endif /* INC_LED_H_ */

@@ -5,7 +5,6 @@
  *  Author: ARIS / Linus Stoeckli
  */
 
-
 #ifndef MS5803_H_
 #define MS5803_H_
 
@@ -29,10 +28,8 @@
   }
 
 enum ms5803_stage {
-  MS_TEMPERATURE_REQ = 0,
-  MS_PRESSURE_REQ = 1,
+	MS_TEMPERATURE_REQ = 0, MS_PRESSURE_REQ = 1,
 };
-
 
 // *** structs *** //
 
@@ -40,7 +37,7 @@ typedef struct ms5803_dev {
 
 	// Hardware Configuration
 	uint8_t addr;
-	I2C_HandleTypeDef* i2c_bus;
+	I2C_HandleTypeDef *i2c_bus;
 	uint8_t active;
 	uint8_t delay;
 	uint16_t cal[6];
@@ -48,10 +45,9 @@ typedef struct ms5803_dev {
 	uint32_t D2;
 } MS5803;
 
-extern uint8_t ms5803_init(struct ms5803_dev * dev);
-extern void ms5803_prep_pressure(struct ms5803_dev * dev);
-extern void ms5803_read_pressure(struct ms5803_dev * dev);
-extern void ms5803_convert(struct ms5803_dev * dev, float * p, float * t);
-
+extern uint8_t ms5803_init(struct ms5803_dev *dev);
+extern void ms5803_prep_pressure(struct ms5803_dev *dev);
+extern void ms5803_read_pressure(struct ms5803_dev *dev);
+extern void ms5803_convert(struct ms5803_dev *dev, float *p, float *t);
 
 #endif /* MS5803_H_ */

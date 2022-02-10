@@ -28,7 +28,7 @@
     .baro2_D1 = 0, \
     .baro2_D2 = 0, \
     .temp_th = 2500, \
-    .temp_td = 0, \
+    .temp_tc = 2500, \
   }
 
 #define LOG_CONATINER_INIT() \
@@ -82,9 +82,9 @@ typedef struct data_container {
 	uint32_t baro2_D1;
 	uint32_t baro2_D2;
 	int16_t temp_th;
-	int16_t temp_td;
+	int16_t temp_tc;
 } data_t;
 
-uint8_t device_is_idle(log_t * LOG, data_t * DATA, uint32_t len);
+uint8_t device_is_idle(log_t *LOG, data_t *DATA, uint32_t len);
 
 #endif /* INC_UTILS_H_ */
