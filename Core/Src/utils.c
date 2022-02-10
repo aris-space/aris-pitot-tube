@@ -12,7 +12,7 @@
 float idle_detect_buffer[IDLE_DETECT_LEN] = {0.0};
 
 
-uint8_t device_is_idle(log_t * LOG, data_t * DATA){
+uint8_t device_is_idle(log_t * LOG, data_t * DATA, uint32_t len) {
 
 	// TODO: include gyro
 	float a[3] = {0.0};
@@ -27,10 +27,10 @@ uint8_t device_is_idle(log_t * LOG, data_t * DATA){
 	}
 	idle_detect_buffer[IDLE_DETECT_LEN-1] = sqrtf(a[0]*a[0] + a[1]*a[1] + a[2]*a[2]);
 	float sum_a = 0.0;
-	for (int i = 0; i < IDLE_DETECT_LEN; i++){
+	for (int i = IDLE_DETECT_LEN - len; i < IDLE_DETECT_LEN; i++){
 		sum_a += idle_detect_buffer[i];
 	}
-	sum_a /= (float)IDLE_DETECT_LEN;
+	sum_a /= (float)len;
 
 	// if average of acceleration over 5 measurements is around 1G, idle has been detected.
 	if ((sum_a <= 1.1) && (sum_a >= 0.9)) return 1;

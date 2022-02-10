@@ -13,7 +13,7 @@
 
 #define IDLE_DETECT_LEN 1000 / CHECK_IDLE_INTERVAL * 10
 
-#define CONTAINER_INIT() \
+#define DATA_CONTAINER_INIT() \
   { \
     .tick = 0, \
     .accel_x = 0, \
@@ -31,7 +31,7 @@
     .temp_td = 0, \
   }
 
-#define LOG_INIT() \
+#define LOG_CONATINER_INIT() \
   { \
     .file_number = 0, \
     .baro1_cal_1 = 0, \
@@ -85,6 +85,6 @@ typedef struct data_container {
 	int16_t temp_td;
 } data_t;
 
-uint8_t device_is_idle(log_t * LOG, data_t * DATA);
+uint8_t device_is_idle(log_t * LOG, data_t * DATA, uint32_t len);
 
 #endif /* INC_UTILS_H_ */

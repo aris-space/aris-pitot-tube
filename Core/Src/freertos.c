@@ -57,8 +57,8 @@ MCP9600 TEMP = MCP_INIT();
 LED STAT = STAT_INIT();
 LED RDY = RDY_INIT();
 
-data_t DATA = CONTAINER_INIT();
-log_t LOG = LOG_INIT();
+data_t DATA = DATA_CONTAINER_INIT();
+log_t LOG = LOG_CONATINER_INIT();
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -270,8 +270,9 @@ void StartDefaultTask(void *argument)
   /* Infinite loop */
   for(;;)
   {
-	// if average of last 2048 is < 1.1g and > 0.9g and gyros not moving then go into good_night_mode
-	if (device_is_idle(&LOG, &DATA) == 1)
+	// if average of last measurement buffer is < 1.1g and > 0.9g
+	// and gyros not moving then go into good_night_mode
+	if (device_is_idle(&LOG, &DATA, IDLE_DETECT_LEN) == 1)
 	{
 		good_night_mode = 1;
 	}
@@ -308,6 +309,8 @@ void StartAccelTask(void *argument)
 			  turn_off(&STAT);
 			  osDelay(50);
     	}
+    	turn_off(&RDY);
+    	turn_off(&STAT);
     	HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PIN1);
 		/* Clear the WU FLAG */
 		__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
