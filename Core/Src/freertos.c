@@ -67,12 +67,6 @@ log_t LOG = LOG_CONATINER_INIT();
 uint8_t good_night_mode = 0;
 uint8_t wake_up_mode = 0;
 
-uint8_t baro1_rdy = 0;
-uint8_t baro2_rdy = 0;
-uint8_t imu_rdy = 0;
-uint8_t temp_rdy = 0;
-
-uint8_t flight_phase = PAD_IDLE;
 float a[8];
 float p1 = 0;
 float p2 = 0;
@@ -82,36 +76,50 @@ float T[4];
 
 char buffer[BUFLEN]; // to store data
 uint16_t num_dat_file = 0;
-uint16_t num_log_file = 0;
+uint16_t num_dir = 0;
 uint8_t SD_state = 0;
 uint16_t counter = 0;
 
-char FILE_NAME[11];
-char LOG_NAME[10];
+char FILE_NAME[24];
+char LOG_NAME[24];
 
 volatile uint32_t tick = 0;
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
-const osThreadAttr_t defaultTask_attributes =
-		{ .name = "defaultTask", .stack_size = 128 * 4, .priority =
-				(osPriority_t) osPriorityBelowNormal, };
+const osThreadAttr_t defaultTask_attributes = {
+  .name = "defaultTask",
+  .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityBelowNormal,
+};
 /* Definitions for accelTask */
 osThreadId_t accelTaskHandle;
-const osThreadAttr_t accelTask_attributes = { .name = "accelTask", .stack_size =
-		512 * 4, .priority = (osPriority_t) osPriorityNormal1, };
+const osThreadAttr_t accelTask_attributes = {
+  .name = "accelTask",
+  .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityNormal1,
+};
 /* Definitions for baroTask */
 osThreadId_t baroTaskHandle;
-const osThreadAttr_t baroTask_attributes = { .name = "baroTask", .stack_size =
-		512 * 4, .priority = (osPriority_t) osPriorityNormal3, };
+const osThreadAttr_t baroTask_attributes = {
+  .name = "baroTask",
+  .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityNormal3,
+};
 /* Definitions for tempTask */
 osThreadId_t tempTaskHandle;
-const osThreadAttr_t tempTask_attributes = { .name = "tempTask", .stack_size =
-		512 * 4, .priority = (osPriority_t) osPriorityNormal4, };
+const osThreadAttr_t tempTask_attributes = {
+  .name = "tempTask",
+  .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityNormal4,
+};
 /* Definitions for SDTask */
 osThreadId_t SDTaskHandle;
-const osThreadAttr_t SDTask_attributes = { .name = "SDTask", .stack_size = 2048
-		* 4, .priority = (osPriority_t) osPriorityHigh, };
+const osThreadAttr_t SDTask_attributes = {
+  .name = "SDTask",
+  .stack_size = 4096 * 4,
+  .priority = (osPriority_t) osPriorityHigh,
+};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -127,52 +135,21 @@ void StartSDTask(void *argument);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /**
- * @brief  FreeRTOS initialization
- * @param  None
- * @retval None
- */
+  * @brief  FreeRTOS initialization
+  * @param  None
+  * @retval None
+  */
 void MX_FREERTOS_Init(void) {
-	/* USER CODE BEGIN Init */
+  /* USER CODE BEGIN Init */
 
 	turn_on(&RDY);
 	turn_on(&STAT);
 
-	baro1_rdy = ms5803_init(&BARO1);
+	uint8_t baro1_rdy = ms5803_init(&BARO1);
 	while (baro1_rdy != 1) {
 		baro1_rdy = ms5803_init(&BARO1);
 		osDelay(100);
 	}
-	baro2_rdy = ms5803_init(&BARO2);
-	while (baro2_rdy != 1) {
-		baro2_rdy = ms5803_init(&BARO2);
-		osDelay(100);
-	}
-	imu_rdy = icm20601_init(&IMU);
-	while (imu_rdy != 1) {
-		imu_rdy = icm20601_init(&IMU);
-		osDelay(100);
-	}
-	temp_rdy = mcp9600_init(&TEMP);
-	while (temp_rdy != 1) {
-		temp_rdy = mcp9600_init(&TEMP);
-		osDelay(100);
-	}
-
-	uint16_t buffer_size = 0;
-	get_file_numbers(&num_dat_file, &num_log_file);
-	num_log_file++;
-	num_dat_file++;
-
-	sprintf(FILE_NAME, "FD%04u.BIN", num_dat_file);
-	if (DEBUG_PRINT == 1)
-		printf("saving %s ...", FILE_NAME);
-
-	sprintf(LOG_NAME, "LOG%02u.BIN", num_log_file);
-	if (DEBUG_PRINT == 1)
-		printf("saving %s ...", LOG_NAME);
-
-	LOG.file_number = num_dat_file;
-
 	LOG.baro1_cal_1 = BARO1.cal[0];
 	LOG.baro1_cal_2 = BARO1.cal[1];
 	LOG.baro1_cal_3 = BARO1.cal[2];
@@ -180,6 +157,11 @@ void MX_FREERTOS_Init(void) {
 	LOG.baro1_cal_5 = BARO1.cal[4];
 	LOG.baro1_cal_6 = BARO1.cal[5];
 
+	uint8_t baro2_rdy = ms5803_init(&BARO2);
+	while (baro2_rdy != 1) {
+		baro2_rdy = ms5803_init(&BARO2);
+		osDelay(100);
+	}
 	LOG.baro2_cal_1 = BARO2.cal[0];
 	LOG.baro2_cal_2 = BARO2.cal[1];
 	LOG.baro2_cal_3 = BARO2.cal[2];
@@ -187,61 +169,64 @@ void MX_FREERTOS_Init(void) {
 	LOG.baro2_cal_5 = BARO2.cal[4];
 	LOG.baro2_cal_6 = BARO2.cal[5];
 
+	uint8_t imu_rdy = icm20601_init(&IMU);
+	while (imu_rdy != 1) {
+		imu_rdy = icm20601_init(&IMU);
+		osDelay(100);
+	}
 	LOG.accel_sens = (uint16_t) _get_accel_sensitivity(IMU.accel_g);
 	LOG.gyro_sens = (uint16_t) (_get_gyro_sensitivity(IMU.gyro_dps) * 10);
 
-	while (write_log_file(LOG_NAME, &LOG, &buffer_size) == FR_OK) {
-		toggle(&RDY);
-		osDelay(250);
-		toggle(&STAT);
-		osDelay(250);
+	uint8_t temp_rdy = mcp9600_init(&TEMP);
+	while (temp_rdy != 1) {
+		temp_rdy = mcp9600_init(&TEMP);
+		osDelay(100);
 	}
 
 	turn_off(&RDY);
 	turn_off(&STAT);
 
-	/* USER CODE END Init */
+  /* USER CODE END Init */
 
-	/* USER CODE BEGIN RTOS_MUTEX */
+  /* USER CODE BEGIN RTOS_MUTEX */
 	/* add mutexes, ... */
-	/* USER CODE END RTOS_MUTEX */
+  /* USER CODE END RTOS_MUTEX */
 
-	/* USER CODE BEGIN RTOS_SEMAPHORES */
+  /* USER CODE BEGIN RTOS_SEMAPHORES */
 	/* add semaphores, ... */
-	/* USER CODE END RTOS_SEMAPHORES */
+  /* USER CODE END RTOS_SEMAPHORES */
 
-	/* USER CODE BEGIN RTOS_TIMERS */
+  /* USER CODE BEGIN RTOS_TIMERS */
 	/* start timers, add new ones, ... */
-	/* USER CODE END RTOS_TIMERS */
+  /* USER CODE END RTOS_TIMERS */
 
-	/* USER CODE BEGIN RTOS_QUEUES */
+  /* USER CODE BEGIN RTOS_QUEUES */
 	/* add queues, ... */
-	/* USER CODE END RTOS_QUEUES */
+  /* USER CODE END RTOS_QUEUES */
 
-	/* Create the thread(s) */
-	/* creation of defaultTask */
-	defaultTaskHandle = osThreadNew(StartDefaultTask, NULL,
-			&defaultTask_attributes);
+  /* Create the thread(s) */
+  /* creation of defaultTask */
+  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
-	/* creation of accelTask */
-	accelTaskHandle = osThreadNew(StartAccelTask, NULL, &accelTask_attributes);
+  /* creation of accelTask */
+  accelTaskHandle = osThreadNew(StartAccelTask, NULL, &accelTask_attributes);
 
-	/* creation of baroTask */
-	baroTaskHandle = osThreadNew(StartBaroTask, NULL, &baroTask_attributes);
+  /* creation of baroTask */
+  baroTaskHandle = osThreadNew(StartBaroTask, NULL, &baroTask_attributes);
 
-	/* creation of tempTask */
-	tempTaskHandle = osThreadNew(StartTempTask, NULL, &tempTask_attributes);
+  /* creation of tempTask */
+  tempTaskHandle = osThreadNew(StartTempTask, NULL, &tempTask_attributes);
 
-	/* creation of SDTask */
-	SDTaskHandle = osThreadNew(StartSDTask, NULL, &SDTask_attributes);
+  /* creation of SDTask */
+  SDTaskHandle = osThreadNew(StartSDTask, NULL, &SDTask_attributes);
 
-	/* USER CODE BEGIN RTOS_THREADS */
+  /* USER CODE BEGIN RTOS_THREADS */
 	/* add threads, ... */
-	/* USER CODE END RTOS_THREADS */
+  /* USER CODE END RTOS_THREADS */
 
-	/* USER CODE BEGIN RTOS_EVENTS */
+  /* USER CODE BEGIN RTOS_EVENTS */
 	/* add events, ... */
-	/* USER CODE END RTOS_EVENTS */
+  /* USER CODE END RTOS_EVENTS */
 
 }
 
@@ -252,18 +237,22 @@ void MX_FREERTOS_Init(void) {
  * @retval None
  */
 /* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void *argument) {
-	/* USER CODE BEGIN StartDefaultTask */
+void StartDefaultTask(void *argument)
+{
+  /* USER CODE BEGIN StartDefaultTask */
 	/* Infinite loop */
 	for (;;) {
-		// if average of last measurement buffer is < 1.1g and > 0.9g
+		// if average of last measurement buffer is < 1.5g
 		// and gyros not moving then go into good_night_mode
-		if (device_is_idle(&LOG, &DATA, IDLE_DETECT_LEN) == 1) {
-			good_night_mode = 1;
+		if (DATA.accel_ok == HAL_OK){
+			if (device_is_idle(&LOG, &DATA, IDLE_DETECT_LEN) == 1) {
+				good_night_mode = 1;
+			}
+			DATA.flight_phase = launch_detect(&LOG, &DATA, LAUNCH_DETECT_LEN);
 		}
 		osDelay(CHECK_IDLE_INTERVAL);
 	}
-	/* USER CODE END StartDefaultTask */
+  /* USER CODE END StartDefaultTask */
 }
 
 /* USER CODE BEGIN Header_StartAccelTask */
@@ -273,11 +262,13 @@ void StartDefaultTask(void *argument) {
  * @retval None
  */
 /* USER CODE END Header_StartAccelTask */
-void StartAccelTask(void *argument) {
-	/* USER CODE BEGIN StartAccelTask */
+void StartAccelTask(void *argument)
+{
+  /* USER CODE BEGIN StartAccelTask */
 	float accel_temperature = 0;
 	int16_t accel_raw[3] = { 0 };
 	int16_t gyro_raw[3] = { 0 };
+	uint8_t accel_stat = HAL_TIMEOUT;
 	/* Infinite loop */
 	for (;;) {
 
@@ -295,7 +286,7 @@ void StartAccelTask(void *argument) {
 			turn_off(&RDY);
 			turn_off(&STAT);
 			HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PIN1);
-			/* Clear the WU FLAG */
+			// Clear the WU FLAG
 			__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
 			HAL_PWR_EnterSTANDBYMode();
 
@@ -305,22 +296,23 @@ void StartAccelTask(void *argument) {
 		} else {
 			if (DEBUG_PRINT == 1)
 				icm20601_read_data(&IMU, a);
-			icm20601_read_accel_raw(&IMU, accel_raw);
+			accel_stat = icm20601_read_accel_raw(&IMU, accel_raw);
 			icm20601_read_gyro_raw(&IMU, gyro_raw);
 			icm20601_read_temp(&IMU, &accel_temperature);
-			DATA.accel_t = (int16_t) (accel_temperature * 100);
-			DATA.accel_x = accel_raw[0];
-			DATA.accel_y = accel_raw[1];
-			DATA.accel_z = accel_raw[2];
-			DATA.gyro_x = gyro_raw[0];
-			DATA.gyro_y = gyro_raw[1];
-			DATA.gyro_z = gyro_raw[2];
+			if (accel_stat == HAL_OK){
+				DATA.accel_t = (int16_t) (accel_temperature * 100);
+				DATA.accel_x = accel_raw[0];
+				DATA.accel_y = accel_raw[1];
+				DATA.accel_z = accel_raw[2];
+				DATA.gyro_x = gyro_raw[0];
+				DATA.gyro_y = gyro_raw[1];
+				DATA.gyro_z = gyro_raw[2];
+			}
+			DATA.accel_ok = accel_stat;
 		}
-
 		osDelay(IMU_INTERVAL);
-
 	}
-	/* USER CODE END StartAccelTask */
+  /* USER CODE END StartAccelTask */
 }
 
 /* USER CODE BEGIN Header_StartBaroTask */
@@ -330,9 +322,11 @@ void StartAccelTask(void *argument) {
  * @retval None
  */
 /* USER CODE END Header_StartBaroTask */
-void StartBaroTask(void *argument) {
-	/* USER CODE BEGIN StartBaroTask */
-
+void StartBaroTask(void *argument)
+{
+  /* USER CODE BEGIN StartBaroTask */
+	uint8_t baro1_stat = HAL_TIMEOUT;
+	uint8_t baro2_stat = HAL_TIMEOUT;
 	/* Infinite loop */
 	for (;;) {
 
@@ -343,14 +337,21 @@ void StartBaroTask(void *argument) {
 			ms5803_prep_pressure(&BARO2);
 
 			osDelay(3);
-			ms5803_read_pressure(&BARO1);
-			ms5803_read_pressure(&BARO2);
+			baro1_stat = ms5803_read_pressure(&BARO1);
+			baro2_stat = ms5803_read_pressure(&BARO2);
 
-			DATA.baro1_D1 = BARO1.D1;
-			DATA.baro1_D2 = BARO1.D2;
+			if (baro1_stat == HAL_OK){
+				DATA.baro1_D1 = BARO1.D1;
+				DATA.baro1_D2 = BARO1.D2;
+			}
+			DATA.baro1_ok = baro1_stat;
 
-			DATA.baro2_D1 = BARO2.D1;
-			DATA.baro2_D2 = BARO2.D2;
+			if (baro2_stat == HAL_OK){
+				DATA.baro2_D1 = BARO2.D1;
+				DATA.baro2_D2 = BARO2.D2;
+			}
+			DATA.baro2_ok = baro2_stat;
+
 
 			if (DEBUG_PRINT == 1)
 				ms5803_convert(&BARO1, &p1, &t1);
@@ -361,7 +362,7 @@ void StartBaroTask(void *argument) {
 		osDelay(BARO_INTERVAL);
 		toggle(&STAT);
 	}
-	/* USER CODE END StartBaroTask */
+  /* USER CODE END StartBaroTask */
 }
 
 /* USER CODE BEGIN Header_StartTempTask */
@@ -371,19 +372,24 @@ void StartBaroTask(void *argument) {
  * @retval None
  */
 /* USER CODE END Header_StartTempTask */
-void StartTempTask(void *argument) {
-	/* USER CODE BEGIN StartTempTask */
+void StartTempTask(void *argument)
+{
+  /* USER CODE BEGIN StartTempTask */
+	uint8_t temp_stat = HAL_TIMEOUT;
 	/* Infinite loop */
 	for (;;) {
 		if (good_night_mode == 0) {
-			mcp9600_read(&TEMP, T);
-			DATA.temp_tc = (int16_t) (T[2] * 100);
-			DATA.temp_th = (int16_t) (T[0] * 100);
+			temp_stat = mcp9600_read(&TEMP, T);
+			if (temp_stat == HAL_OK){
+				DATA.temp_tc = (int16_t) (T[2] * 100);
+				DATA.temp_th = (int16_t) (T[0] * 100);
+			}
+			DATA.temp_ok = temp_stat;
 		}
 
 		osDelay(TEMP_INTERVAL);
 	}
-	/* USER CODE END StartTempTask */
+  /* USER CODE END StartTempTask */
 }
 
 /* USER CODE BEGIN Header_StartSDTask */
@@ -393,20 +399,44 @@ void StartTempTask(void *argument) {
  * @retval None
  */
 /* USER CODE END Header_StartSDTask */
-void StartSDTask(void *argument) {
-	/* USER CODE BEGIN StartSDTask */
+void StartSDTask(void *argument)
+{
+  /* USER CODE BEGIN StartSDTask */
 	uint16_t buffer_size = 0;
 	uint16_t line_counter = 0;
 	FRESULT res = FR_OK;
 
 	printf("mounting SD card \n");
 	mount_sd_card();
+
+	setup_dir(&num_dir);
+
+	num_dat_file = 0;
+
+	sprintf(FILE_NAME, "DAT%04u/FD%04u.BIN", (unsigned int)num_dir, (unsigned int)num_dat_file);
+	if (DEBUG_PRINT == 1)
+		printf("saving %s ... \n", FILE_NAME);
+
+	sprintf(LOG_NAME, "DAT%04u/LOG.BIN", (unsigned int)num_dir);
+	if (DEBUG_PRINT == 1)
+		printf("saving %s ... \n", LOG_NAME);
+
+	if (write_log_file(LOG_NAME, &LOG, &buffer_size) != FR_OK) {
+		while (1){
+			toggle(&RDY);
+			osDelay(250);
+			toggle(&STAT);
+			osDelay(250);
+		}
+	}
+
 	res = open_file(FILE_NAME);
 
 	/* Infinite loop */
 	for (;;) {
 
 		tick = HAL_GetTick();
+		DATA.tick = tick;
 
 		if (good_night_mode == 0) {
 
@@ -423,6 +453,7 @@ void StartSDTask(void *argument) {
 				buffer_size = 0;
 				line_counter = 0;
 				num_dat_file++;
+				res = flush_buffer();
 				close_file();
 				sprintf(FILE_NAME, "FD%04u.BIN", num_dat_file);
 				res = open_file(FILE_NAME);
@@ -431,7 +462,7 @@ void StartSDTask(void *argument) {
 			if (DEBUG_PRINT == 1)
 				printf("tick: %ld \n", tick);
 			if (DEBUG_PRINT == 1)
-				printf("flight phase: %u \n", flight_phase);
+				printf("flight phase: %u \n", DATA.flight_phase);
 			if (DEBUG_PRINT == 1)
 				printf("T_a: %4.2f C \n", a[0]);
 			if (DEBUG_PRINT == 1)
@@ -459,7 +490,7 @@ void StartSDTask(void *argument) {
 			remount_sd_card();
 		osDelay(SAVE_INTERVAL);
 	}
-	/* USER CODE END StartSDTask */
+  /* USER CODE END StartSDTask */
 }
 
 /* Private application code --------------------------------------------------*/

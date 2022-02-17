@@ -36,10 +36,6 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-enum fph {
-  PAD_IDLE = 0,
-  FLIGHT = 1,
-};
 
 /* USER CODE END ET */
 

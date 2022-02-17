@@ -23,8 +23,8 @@ FIL log_file;  // file
 
 void mount_sd_card();
 void remount_sd_card();
+FRESULT setup_dir(uint16_t * num_dir);
 FRESULT get_file_numbers(uint16_t *cnt1, uint16_t *cnt2);
-FRESULT find_next_file_name(char *file_name);
 FRESULT open_file(char *file_name);
 FRESULT close_file(void);
 FRESULT write_log_file(char *file_name, log_t *log, uint16_t *buffer_size);
