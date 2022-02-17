@@ -31,7 +31,7 @@ int mcp9600_init(struct mcp9600_dev *dev) {
 	return 1;
 }
 
-void mcp9600_read(struct mcp9600_dev *dev, float *dat) {
+uint8_t mcp9600_read(struct mcp9600_dev *dev, float *dat) {
 	uint8_t T_H[1] = { 0x00 };
 	uint8_t T_D[1] = { 0x01 };
 	uint8_t T_C[1] = { 0x02 };
@@ -41,6 +41,7 @@ void mcp9600_read(struct mcp9600_dev *dev, float *dat) {
 	float temp_C;
 	int lowTemp;
 	uint8_t rec[2];
+	uint8_t res;
 
 	HAL_I2C_Master_Transmit(dev->i2c_bus, dev->addr, T_H, 1, dev->delay);
 	HAL_I2C_Master_Receive(dev->i2c_bus, dev->addr, rec, 2, dev->delay);
@@ -65,7 +66,7 @@ void mcp9600_read(struct mcp9600_dev *dev, float *dat) {
 	}
 
 	HAL_I2C_Master_Transmit(dev->i2c_bus, dev->addr, T_C, 1, dev->delay);
-	HAL_I2C_Master_Receive(dev->i2c_bus, dev->addr, rec, 2, dev->delay);
+	res = HAL_I2C_Master_Receive(dev->i2c_bus, dev->addr, rec, 2, dev->delay);
 
 	lowTemp = rec[0] & 0x80;
 
@@ -78,6 +79,7 @@ void mcp9600_read(struct mcp9600_dev *dev, float *dat) {
 	dat[0] = temp_H;
 	dat[1] = temp_D;
 	dat[2] = temp_C;
+	return res;
 
 }
 ;

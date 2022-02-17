@@ -10,6 +10,7 @@
 uint8_t ms5803_init(struct ms5803_dev *dev) {
 	if (HAL_I2C_GetState(dev->i2c_bus) != HAL_I2C_STATE_READY) {
 		printf("i2c not ready!\n");
+		return 0;
 	} else {
 		printf("i2c is ready!\n");
 	}
@@ -43,7 +44,7 @@ uint8_t ms5803_init(struct ms5803_dev *dev) {
 		get_add = 0b10100000;
 		get_add = get_add + 2 * i;
 
-		_ret = HAL_I2C_Master_Transmit(dev->i2c_bus, dev->addr, &get_add, 1,
+		HAL_I2C_Master_Transmit(dev->i2c_bus, dev->addr, &get_add, 1,
 				dev->delay);
 		HAL_Delay(15);
 		_ret = HAL_I2C_Master_Receive(dev->i2c_bus, dev->addr, buf, 2,
@@ -52,6 +53,7 @@ uint8_t ms5803_init(struct ms5803_dev *dev) {
 
 		if (_ret != HAL_OK) {
 			printf("MS5607 cal read fail\n");
+			return 0;
 		}
 	}
 
@@ -64,27 +66,30 @@ uint8_t ms5803_init(struct ms5803_dev *dev) {
 	return 1;
 }
 
-void ms5803_prep_pressure(struct ms5803_dev *dev) {
+uint8_t ms5803_prep_pressure(struct ms5803_dev *dev) {
 	uint8_t buf[3];
+	uint8_t res;
 	buf[0] = 0x00;
 
 	HAL_I2C_Master_Transmit(dev->i2c_bus, dev->addr, buf, 1, dev->delay);
-	HAL_I2C_Master_Receive(dev->i2c_bus, dev->addr, buf, 3, dev->delay);
+	res = HAL_I2C_Master_Receive(dev->i2c_bus, dev->addr, buf, 3, dev->delay);
 
 	dev->D1 = (uint32_t) (buf[0] << 16) | (uint32_t) (buf[1] << 8)
 			| (uint32_t) buf[2];
 
 	buf[0] = 0x54;
 	HAL_I2C_Master_Transmit(dev->i2c_bus, dev->addr, buf, 1, dev->delay);
+	return res;
 	// need to wait 3 ms
 }
 
-void ms5803_read_pressure(struct ms5803_dev *dev) {
+uint8_t ms5803_read_pressure(struct ms5803_dev *dev) {
 	uint8_t buf[3];
+	uint8_t res;
 	buf[0] = 0x00;
 
 	HAL_I2C_Master_Transmit(dev->i2c_bus, dev->addr, buf, 1, dev->delay);
-	HAL_I2C_Master_Receive(dev->i2c_bus, dev->addr, buf, 3, dev->delay);
+	res = HAL_I2C_Master_Receive(dev->i2c_bus, dev->addr, buf, 3, dev->delay);
 
 	dev->D2 = (uint32_t) (buf[0] << 16) | (uint32_t) (buf[1] << 8)
 			| (uint32_t) buf[2];
@@ -92,6 +97,7 @@ void ms5803_read_pressure(struct ms5803_dev *dev) {
 	buf[0] = 0x44;
 	HAL_I2C_Master_Transmit(dev->i2c_bus, dev->addr, buf, 1, dev->delay);
 	// need to wait 3 ms
+	return res;
 }
 
 void ms5803_convert(struct ms5803_dev *dev, float *p, float *t) {

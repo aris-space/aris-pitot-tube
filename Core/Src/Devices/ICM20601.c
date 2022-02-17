@@ -72,13 +72,15 @@ uint8_t _compareArrays(uint8_t *a, uint8_t *b, int size) {
 }
 
 // Read bytes from MEMS
-void _icm_read_bytes(struct icm20601_dev *dev, uint8_t reg, uint8_t *pData,
+uint8_t _icm_read_bytes(struct icm20601_dev *dev, uint8_t reg, uint8_t *pData,
 		uint16_t size) {
+	uint8_t res;
 	reg = reg | 0x80;
 	HAL_GPIO_WritePin(dev->cs_port, dev->cs_pin, GPIO_PIN_RESET);
 	HAL_SPI_Transmit(dev->spi_bus, &reg, 1, IMU20601_SPI_TIMEOUT);
-	HAL_SPI_Receive(dev->spi_bus, pData, size, IMU20601_SPI_TIMEOUT);
+	res = HAL_SPI_Receive(dev->spi_bus, pData, size, IMU20601_SPI_TIMEOUT);
 	HAL_GPIO_WritePin(dev->cs_port, dev->cs_pin, GPIO_PIN_SET);
+	return res;
 }
 
 // Write bytes to MEMS
@@ -273,13 +275,15 @@ void icm20601_read_int(struct icm20601_dev *dev, uint8_t *r) {
 }
 
 // Read out raw acceleration data
-void icm20601_read_accel_raw(struct icm20601_dev *dev, int16_t *accel) {
+uint8_t icm20601_read_accel_raw(struct icm20601_dev *dev, int16_t *accel) {
 	uint8_t accel_8bit[6] = { 0 };
-	_icm_read_bytes(dev, REG_ACCEL_XOUT_H, accel_8bit, 6);
+	uint8_t res;
+	res = _icm_read_bytes(dev, REG_ACCEL_XOUT_H, accel_8bit, 6);
 
 	UINT8_TO_INT16(accel[0], accel_8bit[0], accel_8bit[1]);
 	UINT8_TO_INT16(accel[1], accel_8bit[2], accel_8bit[3]);
 	UINT8_TO_INT16(accel[2], accel_8bit[4], accel_8bit[5]);
+	return res;
 }
 
 // Read out processed acceleration data
@@ -297,13 +301,15 @@ void icm20601_read_accel(struct icm20601_dev *dev, float *accel) {
 }
 
 // Read out raw gyro data
-void icm20601_read_gyro_raw(struct icm20601_dev *dev, int16_t *gyro) {
+uint8_t icm20601_read_gyro_raw(struct icm20601_dev *dev, int16_t *gyro) {
 	uint8_t gyro_8bit[6] = { 0 };
-	_icm_read_bytes(dev, REG_GYRO_XOUT_H, gyro_8bit, 6);
+	uint8_t res;
+	res = _icm_read_bytes(dev, REG_GYRO_XOUT_H, gyro_8bit, 6);
 
 	UINT8_TO_INT16(gyro[0], gyro_8bit[0], gyro_8bit[1]);
 	UINT8_TO_INT16(gyro[1], gyro_8bit[2], gyro_8bit[3]);
 	UINT8_TO_INT16(gyro[2], gyro_8bit[4], gyro_8bit[5]);
+	return res;
 }
 
 // Read out processed gyro data
@@ -321,19 +327,23 @@ void icm20601_read_gyro(struct icm20601_dev *dev, float *gyro) {
 }
 
 // Read out raw temperature data
-void icm20601_read_temp_raw(struct icm20601_dev *dev, int16_t *temp) {
+uint8_t icm20601_read_temp_raw(struct icm20601_dev *dev, int16_t *temp) {
 	uint8_t temp_8bit[2] = { 0 };
-	_icm_read_bytes(dev, REG_TEMP_OUT_H, temp_8bit, 2);
+	uint8_t res;
+	res = _icm_read_bytes(dev, REG_TEMP_OUT_H, temp_8bit, 2);
 
 	UINT8_TO_INT16(*temp, temp_8bit[0], temp_8bit[1]);
+	return res;
 }
 
 // Read out processed temperature in degC
-void icm20601_read_temp(struct icm20601_dev *dev, float *temp) {
+uint8_t icm20601_read_temp(struct icm20601_dev *dev, float *temp) {
 	int16_t temperature_raw;
-	icm20601_read_temp_raw(dev, &temperature_raw);
+	uint8_t res;
+	res = icm20601_read_temp_raw(dev, &temperature_raw);
 
 	*temp = ((float) temperature_raw) / temperature_sensitivity + 25.0; // TEMP_degC = ((TEMP_OUT – RoomTemp_Offset)/Temp_Sensitivity) + 25degC
+	return res;
 }
 
 void icm20601_read_data(struct icm20601_dev *dev, float *buf) {
