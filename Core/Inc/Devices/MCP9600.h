@@ -31,7 +31,7 @@ typedef struct mcp9600_dev {
 } MCP9600;
 
 int mcp9600_init(struct mcp9600_dev *dev);
-void mcp9600_read(struct mcp9600_dev *dev, float *dat);
+uint8_t mcp9600_read(struct mcp9600_dev *dev, float *dat);
 
 void write(struct mcp9600_dev *dev, uint8_t REG, uint8_t val);
 

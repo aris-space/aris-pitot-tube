@@ -168,15 +168,15 @@ extern void icm20601_read_int(struct icm20601_dev *dev, uint8_t *r);
 
 extern void icm20601_read_accel(struct icm20601_dev *dev, float *accel);
 
-extern void icm20601_read_accel_raw(struct icm20601_dev *dev, int16_t *accel);
+extern uint8_t icm20601_read_accel_raw(struct icm20601_dev *dev, int16_t *accel);
 
 extern void icm20601_read_gyro(struct icm20601_dev *dev, float *gyro);
 
-extern void icm20601_read_gyro_raw(struct icm20601_dev *dev, int16_t *gyro);
+extern uint8_t icm20601_read_gyro_raw(struct icm20601_dev *dev, int16_t *gyro);
 
-extern void icm20601_read_temp_raw(struct icm20601_dev *dev, int16_t *temp);
+extern uint8_t icm20601_read_temp_raw(struct icm20601_dev *dev, int16_t *temp);
 
-extern void icm20601_read_temp(struct icm20601_dev *dev, float *temp);
+extern uint8_t icm20601_read_temp(struct icm20601_dev *dev, float *temp);
 
 extern void icm20601_read_data(struct icm20601_dev *dev, float *buf);
 

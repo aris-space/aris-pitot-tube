@@ -46,8 +46,8 @@ typedef struct ms5803_dev {
 } MS5803;
 
 extern uint8_t ms5803_init(struct ms5803_dev *dev);
-extern void ms5803_prep_pressure(struct ms5803_dev *dev);
-extern void ms5803_read_pressure(struct ms5803_dev *dev);
+extern uint8_t ms5803_prep_pressure(struct ms5803_dev *dev);
+extern uint8_t ms5803_read_pressure(struct ms5803_dev *dev);
 extern void ms5803_convert(struct ms5803_dev *dev, float *p, float *t);
 
 #endif /* MS5803_H_ */
