@@ -438,6 +438,8 @@ void StartSDTask(void *argument)
 		tick = HAL_GetTick();
 		DATA.tick = tick;
 
+		//TODO: close file and unmount SD card if going to sleep!
+
 		if (good_night_mode == 0) {
 
 			res = write_to_file(&DATA, &buffer_size);
@@ -471,6 +473,12 @@ void StartSDTask(void *argument)
 				printf("ay: %4.2f m/s2 \n", a[2]);
 			if (DEBUG_PRINT == 1)
 				printf("az: %4.2f m/s2 \n", a[3]);
+			if (DEBUG_PRINT == 1)
+				printf("gx: %4.2f dps \n", a[4]);
+			if (DEBUG_PRINT == 1)
+				printf("gy: %4.2f dps \n", a[5]);
+			if (DEBUG_PRINT == 1)
+				printf("gz: %4.2f dps \n", a[6]);
 			if (DEBUG_PRINT == 1)
 				printf("p1: %4.2f mBar \n", p1);
 			if (DEBUG_PRINT == 1)
