@@ -58,7 +58,7 @@ LED STAT = STAT_INIT();
 LED RDY = RDY_INIT();
 
 data_t DATA = DATA_CONTAINER_INIT();
-log_t LOG = LOG_CONATINER_INIT();
+cal_t CAL = CAL_CONATINER_INIT();
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -150,32 +150,32 @@ void MX_FREERTOS_Init(void) {
 		baro1_rdy = ms5803_init(&BARO1);
 		osDelay(100);
 	}
-	LOG.baro1_cal_1 = BARO1.cal[0];
-	LOG.baro1_cal_2 = BARO1.cal[1];
-	LOG.baro1_cal_3 = BARO1.cal[2];
-	LOG.baro1_cal_4 = BARO1.cal[3];
-	LOG.baro1_cal_5 = BARO1.cal[4];
-	LOG.baro1_cal_6 = BARO1.cal[5];
+	CAL.baro1_cal_1 = BARO1.cal[0];
+	CAL.baro1_cal_2 = BARO1.cal[1];
+	CAL.baro1_cal_3 = BARO1.cal[2];
+	CAL.baro1_cal_4 = BARO1.cal[3];
+	CAL.baro1_cal_5 = BARO1.cal[4];
+	CAL.baro1_cal_6 = BARO1.cal[5];
 
 	uint8_t baro2_rdy = ms5803_init(&BARO2);
 	while (baro2_rdy != 1) {
 		baro2_rdy = ms5803_init(&BARO2);
 		osDelay(100);
 	}
-	LOG.baro2_cal_1 = BARO2.cal[0];
-	LOG.baro2_cal_2 = BARO2.cal[1];
-	LOG.baro2_cal_3 = BARO2.cal[2];
-	LOG.baro2_cal_4 = BARO2.cal[3];
-	LOG.baro2_cal_5 = BARO2.cal[4];
-	LOG.baro2_cal_6 = BARO2.cal[5];
+	CAL.baro2_cal_1 = BARO2.cal[0];
+	CAL.baro2_cal_2 = BARO2.cal[1];
+	CAL.baro2_cal_3 = BARO2.cal[2];
+	CAL.baro2_cal_4 = BARO2.cal[3];
+	CAL.baro2_cal_5 = BARO2.cal[4];
+	CAL.baro2_cal_6 = BARO2.cal[5];
 
 	uint8_t imu_rdy = icm20601_init(&IMU);
 	while (imu_rdy != 1) {
 		imu_rdy = icm20601_init(&IMU);
 		osDelay(100);
 	}
-	LOG.accel_sens = (uint16_t) _get_accel_sensitivity(IMU.accel_g);
-	LOG.gyro_sens = (uint16_t) (_get_gyro_sensitivity(IMU.gyro_dps) * 10);
+	CAL.accel_sens = (uint16_t) _get_accel_sensitivity(IMU.accel_g);
+	CAL.gyro_sens = (uint16_t) (_get_gyro_sensitivity(IMU.gyro_dps) * 10);
 
 	uint8_t temp_rdy = mcp9600_init(&TEMP);
 	while (temp_rdy != 1) {
@@ -245,10 +245,10 @@ void StartDefaultTask(void *argument)
 		// if average of last measurement buffer is < 1.5g
 		// and gyros not moving then go into good_night_mode
 		if (DATA.accel_ok == HAL_OK){
-			if (device_is_idle(&LOG, &DATA, IDLE_DETECT_LEN) == 1) {
+			if (device_is_idle(&CAL, &DATA, IDLE_DETECT_LEN) == 1) {
 				good_night_mode = 1;
 			}
-			DATA.flight_phase = launch_detect(&LOG, &DATA, LAUNCH_DETECT_LEN);
+			DATA.flight_phase = launch_detect(&CAL, &DATA, LAUNCH_DETECT_LEN);
 		}
 		osDelay(CHECK_IDLE_INTERVAL);
 	}
@@ -275,6 +275,7 @@ void StartAccelTask(void *argument)
 		if (good_night_mode == 1) {
 			icm20601_standby(&IMU);
 			// give other tasks time to stop
+			// TODO: do this properly
 			for (int i = 0; i < 10; i++) {
 				turn_on(&RDY);
 				turn_on(&STAT);
@@ -309,6 +310,9 @@ void StartAccelTask(void *argument)
 				DATA.gyro_z = gyro_raw[2];
 			}
 			DATA.accel_ok = accel_stat;
+
+			// TODO: if sensor is not okay/timeout do a re-init and log to file
+
 		}
 		osDelay(IMU_INTERVAL);
 	}
@@ -352,6 +356,8 @@ void StartBaroTask(void *argument)
 			}
 			DATA.baro2_ok = baro2_stat;
 
+			// TODO: if sensor is not okay/timeout do a re-init and log to file
+
 
 			if (DEBUG_PRINT == 1)
 				ms5803_convert(&BARO1, &p1, &t1);
@@ -385,6 +391,9 @@ void StartTempTask(void *argument)
 				DATA.temp_th = (int16_t) (T[0] * 100);
 			}
 			DATA.temp_ok = temp_stat;
+
+			// TODO: if sensor is not okay/timeout do a re-init and log to file
+
 		}
 
 		osDelay(TEMP_INTERVAL);
@@ -421,7 +430,7 @@ void StartSDTask(void *argument)
 	if (DEBUG_PRINT == 1)
 		printf("saving %s ... \n", LOG_NAME);
 
-	if (write_log_file(LOG_NAME, &LOG, &buffer_size) != FR_OK) {
+	if (write_log_file(LOG_NAME, &CAL, &buffer_size) != FR_OK) {
 		while (1){
 			toggle(&RDY);
 			osDelay(250);
@@ -495,6 +504,7 @@ void StartSDTask(void *argument)
 				printf("T_C: %4.2f C \n", T[2]);
 		}
 		if (res != FR_OK)
+			// TODO: log to file
 			remount_sd_card();
 		osDelay(SAVE_INTERVAL);
 	}

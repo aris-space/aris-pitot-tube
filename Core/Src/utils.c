@@ -14,7 +14,7 @@ uint16_t launch_detect_buffer[LAUNCH_DETECT_LEN] = { 0.0 };
 uint32_t empty_idle_buffer_counter = 0;
 uint32_t empty_launch_buffer_counter = 0;
 
-uint8_t device_is_idle(log_t *LOG, data_t *DATA, uint32_t len) {
+uint8_t device_is_idle(cal_t *LOG, data_t *DATA, uint32_t len) {
 	float a[3] = { 0.0 };
 	float g[3] = { 0.0 };
 
@@ -54,7 +54,7 @@ uint8_t device_is_idle(log_t *LOG, data_t *DATA, uint32_t len) {
 	return 0;
 }
 
-uint8_t launch_detect(log_t *LOG, data_t *DATA, uint32_t len) {
+uint8_t launch_detect(cal_t *LOG, data_t *DATA, uint32_t len) {
 	float a[3] = { 0.0 };
 
 	a[0] = ((float) DATA->accel_x) / LOG->accel_sens;

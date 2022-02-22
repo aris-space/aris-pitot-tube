@@ -38,7 +38,7 @@
 	.temp_ok = HAL_TIMEOUT, \
   }
 
-#define LOG_CONATINER_INIT() \
+#define CAL_CONATINER_INIT() \
   { \
     .baro1_cal_1 = 0, \
     .baro1_cal_2 = 0, \
@@ -62,7 +62,7 @@ enum fph {
 };
 
 
-typedef struct log_container {
+typedef struct cal_container {
 	uint16_t baro1_cal_1;
 	uint16_t baro1_cal_2;
 	uint16_t baro1_cal_3;
@@ -77,7 +77,7 @@ typedef struct log_container {
 	uint16_t baro2_cal_6;
 	uint16_t accel_sens;
 	uint16_t gyro_sens;
-} log_t;
+} cal_t;
 
 typedef struct data_container {
 	uint32_t tick;
@@ -101,7 +101,7 @@ typedef struct data_container {
 	uint8_t temp_ok;
 } data_t;
 
-uint8_t device_is_idle(log_t *LOG, data_t *DATA, uint32_t len);
-uint8_t launch_detect(log_t *LOG, data_t *DATA, uint32_t len);
+uint8_t device_is_idle(cal_t *LOG, data_t *DATA, uint32_t len);
+uint8_t launch_detect(cal_t *LOG, data_t *DATA, uint32_t len);
 
 #endif /* INC_UTILS_H_ */

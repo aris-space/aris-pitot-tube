@@ -12,7 +12,7 @@
 
 FATFS Fat_Fs;
 FIL Data_File;
-FIL Log_File;
+FIL Cal_File;
 
 void mount_sd_card() {
 	FRESULT res;
@@ -121,6 +121,7 @@ FRESULT get_file_numbers(uint16_t *cnt1, uint16_t *cnt2) {
 		printf("\n this is the %hu th flight. \n", *cnt1);
 	if (DEBUG_PRINT == 1)
 		printf("\n this is the %hu th log file. \n", *cnt2);
+	return res;
 }
 
 
@@ -158,45 +159,45 @@ FRESULT close_file(void) {
 }
 
 
-FRESULT write_log_file(char *file_name, log_t *log, uint16_t *buffer_size) {
+FRESULT write_log_file(char *file_name, cal_t *cal, uint16_t *buffer_size) {
 	FRESULT res;
 	UINT bc; /* Data read/write count */
 	if (DEBUG_PRINT == 1)
 		printf("[STORAGE TASK] saving data to log file\n");
 	bc = 0;
 
-	res = f_open(&Log_File, file_name, FA_OPEN_APPEND | FA_WRITE);
+	res = f_open(&Cal_File, file_name, FA_OPEN_APPEND | FA_WRITE);
 
-	res += f_write(&Log_File, &(log->baro1_cal_1), 2, &bc);
+	res += f_write(&Cal_File, &(cal->baro1_cal_1), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Log_File, &(log->baro1_cal_2), 2, &bc);
+	res += f_write(&Cal_File, &(cal->baro1_cal_2), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Log_File, &(log->baro1_cal_3), 2, &bc);
+	res += f_write(&Cal_File, &(cal->baro1_cal_3), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Log_File, &(log->baro1_cal_4), 2, &bc);
+	res += f_write(&Cal_File, &(cal->baro1_cal_4), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Log_File, &(log->baro1_cal_5), 2, &bc);
+	res += f_write(&Cal_File, &(cal->baro1_cal_5), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Log_File, &(log->baro1_cal_6), 2, &bc);
+	res += f_write(&Cal_File, &(cal->baro1_cal_6), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Log_File, &(log->baro2_cal_1), 2, &bc);
+	res += f_write(&Cal_File, &(cal->baro2_cal_1), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Log_File, &(log->baro2_cal_2), 2, &bc);
+	res += f_write(&Cal_File, &(cal->baro2_cal_2), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Log_File, &(log->baro2_cal_3), 2, &bc);
+	res += f_write(&Cal_File, &(cal->baro2_cal_3), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Log_File, &(log->baro2_cal_4), 2, &bc);
+	res += f_write(&Cal_File, &(cal->baro2_cal_4), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Log_File, &(log->baro2_cal_5), 2, &bc);
+	res += f_write(&Cal_File, &(cal->baro2_cal_5), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Log_File, &(log->baro2_cal_6), 2, &bc);
+	res += f_write(&Cal_File, &(cal->baro2_cal_6), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Log_File, &(log->accel_sens), 2, &bc);
+	res += f_write(&Cal_File, &(cal->accel_sens), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Log_File, &(log->gyro_sens), 2, &bc);
+	res += f_write(&Cal_File, &(cal->gyro_sens), 2, &bc);
 	*buffer_size += bc;
 
-	res += f_close(&Log_File);
+	res += f_close(&Cal_File);
 	if (res != FR_OK) {
 		if (DEBUG_PRINT == 1)
 			printf("[STORAGE TASK] Failed saving log: %d\n", res);
