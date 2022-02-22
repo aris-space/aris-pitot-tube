@@ -159,7 +159,7 @@ FRESULT close_file(void) {
 }
 
 
-FRESULT write_log_file(char *file_name, cal_t *cal, uint16_t *buffer_size) {
+FRESULT write_cal_file(char *file_name, cal_t *cal, uint16_t *buffer_size) {
 	FRESULT res;
 	UINT bc; /* Data read/write count */
 	if (DEBUG_PRINT == 1)

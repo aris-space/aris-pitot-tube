@@ -81,7 +81,7 @@ uint8_t SD_state = 0;
 uint16_t counter = 0;
 
 char FILE_NAME[24];
-char LOG_NAME[24];
+char CAL_NAME[24];
 
 volatile uint32_t tick = 0;
 /* USER CODE END Variables */
@@ -426,11 +426,11 @@ void StartSDTask(void *argument)
 	if (DEBUG_PRINT == 1)
 		printf("saving %s ... \n", FILE_NAME);
 
-	sprintf(LOG_NAME, "DAT%04u/LOG.BIN", (unsigned int)num_dir);
+	sprintf(CAL_NAME, "DAT%04u/LOG.BIN", (unsigned int)num_dir);
 	if (DEBUG_PRINT == 1)
-		printf("saving %s ... \n", LOG_NAME);
+		printf("saving %s ... \n", CAL_NAME);
 
-	if (write_log_file(LOG_NAME, &CAL, &buffer_size) != FR_OK) {
+	if (write_cal_file(CAL_NAME, &CAL, &buffer_size) != FR_OK) {
 		while (1){
 			toggle(&RDY);
 			osDelay(250);

@@ -27,7 +27,7 @@ FRESULT setup_dir(uint16_t * num_dir);
 FRESULT get_file_numbers(uint16_t *cnt1, uint16_t *cnt2);
 FRESULT open_file(char *file_name);
 FRESULT close_file(void);
-FRESULT write_log_file(char *file_name, cal_t *cal, uint16_t *buffer_size);
+FRESULT write_cal_file(char *file_name, cal_t *cal, uint16_t *buffer_size);
 FRESULT write_to_file(data_t *data, uint16_t *buffer_size);
 FRESULT flush_buffer();
 
