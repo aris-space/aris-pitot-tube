@@ -22,9 +22,9 @@ uint8_t device_is_idle(log_t *LOG, data_t *DATA, uint32_t len) {
 	a[1] = ((float) DATA->accel_y) / LOG->accel_sens;
 	a[2] = ((float) DATA->accel_z) / LOG->accel_sens;
 
-	a[0] = ((float) DATA->gyro_x) / LOG->gyro_sens;
-	a[1] = ((float) DATA->gyro_y) / LOG->gyro_sens;
-	a[2] = ((float) DATA->gyro_z) / LOG->gyro_sens;
+	g[0] = ((float) DATA->gyro_x) / LOG->gyro_sens;
+	g[1] = ((float) DATA->gyro_y) / LOG->gyro_sens;
+	g[2] = ((float) DATA->gyro_z) / LOG->gyro_sens;
 
 	for (int i = 1; i < IDLE_DETECT_LEN; i++) {
 		idle_detect_buffer_a[i - 1] = idle_detect_buffer_a[i];
@@ -49,7 +49,7 @@ uint8_t device_is_idle(log_t *LOG, data_t *DATA, uint32_t len) {
 	printf("sum_g: %4.2f \n", sum_g);
 	if (empty_idle_buffer_counter <= IDLE_DETECT_LEN) empty_idle_buffer_counter ++;
 	if (empty_idle_buffer_counter < IDLE_DETECT_LEN) return 0;
-	if ((0.5 <= sum_a) && (sum_a <= 1.5))
+	if ((0.5 <= sum_a) && (sum_a <= 1.5) && (sum_g <= 0.5))
 		return 1;
 	return 0;
 }
