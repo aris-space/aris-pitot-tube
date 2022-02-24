@@ -10,7 +10,7 @@
 #include "utils.h"
 #include "main.h"
 
-#define WRITE_BUFFER_SIZE 1024
+#define WRITE_BUFFER_SIZE 511
 #define SECONDS_PER_FILE 10
 
 extern FATFS Fat_Fs;
