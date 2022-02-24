@@ -57,10 +57,8 @@
   }
 
 enum fph {
-  PAD_IDLE = 1,
-  FLIGHT = 2,
+	PAD_IDLE = 1, FLIGHT = 2,
 };
-
 
 typedef struct cal_container {
 	uint16_t baro1_cal_1;
@@ -78,6 +76,29 @@ typedef struct cal_container {
 	uint16_t accel_sens;
 	uint16_t gyro_sens;
 } cal_t;
+
+typedef struct baro_data_container {
+	uint32_t tick;
+	uint32_t baro_D1;
+	uint32_t baro_D2;
+} baro_data_t;
+
+typedef struct accel_data_container {
+	uint32_t tick;
+	int16_t accel_x;
+	int16_t accel_y;
+	int16_t accel_z;
+	int16_t gyro_x;
+	int16_t gyro_y;
+	int16_t gyro_z;
+	int16_t accel_t;
+} accel_data_t;
+
+typedef struct temp_data_container {
+	uint32_t tick;
+	int16_t temp_th;
+	int16_t temp_tc;
+} temp_data_t;
 
 typedef struct data_container {
 	uint32_t tick;

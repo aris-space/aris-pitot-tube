@@ -223,7 +223,7 @@ int8_t icm20601_standby(struct icm20601_dev *dev) {
 	tmp = 0x00;
 	tmp = 0x7f;
 	tmp = 0x19;
-	tmp = 100;
+	tmp = 80;
 	_icm_write_bytes(dev, REG_ACCEL_WOM_THR, &tmp, 1);
 	osDelay(1);
 
