@@ -46,7 +46,7 @@ extern "C" {
 
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
-#define BUFLEN 1024
+#define BUFLEN 128
 #define DEBUG_PRINT 0
 /* USER CODE END EM */
 

@@ -27,8 +27,8 @@ FRESULT open_file(char *file_name);
 FRESULT close_file(void);
 FRESULT init_log(char *file_name);
 FRESULT log_msg(char *file_name, char *message);
-FRESULT write_cal_file(char *file_name, cal_t *cal, uint16_t *buffer_size);
-FRESULT write_to_file(data_t *data, uint16_t *buffer_size);
+FRESULT write_cal_file(char *file_name, cal_t *cal_container, uint16_t *buffer_size);
+FRESULT write_to_file(data_t *data_container, uint16_t *buffer_size);
 FRESULT flush_buffer();
 
 #endif /* INC_SD_H_ */

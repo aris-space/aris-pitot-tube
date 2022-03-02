@@ -14,17 +14,17 @@ uint16_t launch_detect_buffer[LAUNCH_DETECT_LEN] = { 0.0 };
 uint32_t empty_idle_buffer_counter = 0;
 uint32_t empty_launch_buffer_counter = 0;
 
-uint8_t device_is_idle(cal_t *LOG, data_t *DATA, uint32_t len) {
+uint8_t device_is_idle(cal_t *cal_container, data_t *data_container, uint32_t len) {
 	float a[3] = { 0.0 };
 	float g[3] = { 0.0 };
 
-	a[0] = ((float) DATA->accel_x) / LOG->accel_sens;
-	a[1] = ((float) DATA->accel_y) / LOG->accel_sens;
-	a[2] = ((float) DATA->accel_z) / LOG->accel_sens;
+	a[0] = ((float) data_container->accel_x) / cal_container->accel_sens;
+	a[1] = ((float) data_container->accel_y) / cal_container->accel_sens;
+	a[2] = ((float) data_container->accel_z) / cal_container->accel_sens;
 
-	g[0] = ((float) DATA->gyro_x) / LOG->gyro_sens;
-	g[1] = ((float) DATA->gyro_y) / LOG->gyro_sens;
-	g[2] = ((float) DATA->gyro_z) / LOG->gyro_sens;
+	g[0] = ((float) data_container->gyro_x) / cal_container->gyro_sens * 10;
+	g[1] = ((float) data_container->gyro_y) / cal_container->gyro_sens * 10;
+	g[2] = ((float) data_container->gyro_z) / cal_container->gyro_sens * 10;
 
 	for (int i = 1; i < IDLE_DETECT_LEN; i++) {
 		idle_detect_buffer_a[i - 1] = idle_detect_buffer_a[i];
@@ -53,17 +53,17 @@ uint8_t device_is_idle(cal_t *LOG, data_t *DATA, uint32_t len) {
 		printf("still filling buffer... \n");
 		return 0;
 	}
-	if ((0.5 <= sum_a) && (sum_a <= 1.5) && (sum_g <= 0.5))
+	if ((0.5 <= sum_a) && (sum_a <= 1.5) && (sum_g <= 5))
 		return 1;
 	return 0;
 }
 
-uint8_t launch_detect(cal_t *LOG, data_t *DATA, uint32_t len) {
+uint8_t launch_detect(cal_t *cal_container, data_t *data_container, uint32_t len) {
 	float a[3] = { 0.0 };
 
-	a[0] = ((float) DATA->accel_x) / LOG->accel_sens;
-	a[1] = ((float) DATA->accel_y) / LOG->accel_sens;
-	a[2] = ((float) DATA->accel_z) / LOG->accel_sens;
+	a[0] = ((float) data_container->accel_x) / cal_container->accel_sens;
+	a[1] = ((float) data_container->accel_y) / cal_container->accel_sens;
+	a[2] = ((float) data_container->accel_z) / cal_container->accel_sens;
 
 	for (int i = 1; i < LAUNCH_DETECT_LEN; i++) {
 		launch_detect_buffer[i - 1] = launch_detect_buffer[i];

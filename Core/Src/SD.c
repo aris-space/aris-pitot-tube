@@ -198,6 +198,7 @@ FRESULT init_log(char *file_name) {
 FRESULT log_msg(char *file_name, char *message) {
 	FRESULT res;
 
+	printf("[LOGGING] %s", message);
 	// Open the file with write access
 	res = f_open(&Log_File, file_name, FA_OPEN_APPEND | FA_WRITE);
 
@@ -215,7 +216,7 @@ FRESULT log_msg(char *file_name, char *message) {
 	return res;
 }
 
-FRESULT write_cal_file(char *file_name, cal_t *cal, uint16_t *buffer_size) {
+FRESULT write_cal_file(char *file_name, cal_t *cal_container, uint16_t *buffer_size) {
 	FRESULT res;
 	UINT bc; /* Data read/write count */
 	if (DEBUG_PRINT == 1)
@@ -224,33 +225,33 @@ FRESULT write_cal_file(char *file_name, cal_t *cal, uint16_t *buffer_size) {
 
 	res = f_open(&Cal_File, file_name, FA_OPEN_APPEND | FA_WRITE);
 
-	res += f_write(&Cal_File, &(cal->baro1_cal_1), 2, &bc);
+	res += f_write(&Cal_File, &(cal_container->baro1_cal_1), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Cal_File, &(cal->baro1_cal_2), 2, &bc);
+	res += f_write(&Cal_File, &(cal_container->baro1_cal_2), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Cal_File, &(cal->baro1_cal_3), 2, &bc);
+	res += f_write(&Cal_File, &(cal_container->baro1_cal_3), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Cal_File, &(cal->baro1_cal_4), 2, &bc);
+	res += f_write(&Cal_File, &(cal_container->baro1_cal_4), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Cal_File, &(cal->baro1_cal_5), 2, &bc);
+	res += f_write(&Cal_File, &(cal_container->baro1_cal_5), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Cal_File, &(cal->baro1_cal_6), 2, &bc);
+	res += f_write(&Cal_File, &(cal_container->baro1_cal_6), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Cal_File, &(cal->baro2_cal_1), 2, &bc);
+	res += f_write(&Cal_File, &(cal_container->baro2_cal_1), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Cal_File, &(cal->baro2_cal_2), 2, &bc);
+	res += f_write(&Cal_File, &(cal_container->baro2_cal_2), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Cal_File, &(cal->baro2_cal_3), 2, &bc);
+	res += f_write(&Cal_File, &(cal_container->baro2_cal_3), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Cal_File, &(cal->baro2_cal_4), 2, &bc);
+	res += f_write(&Cal_File, &(cal_container->baro2_cal_4), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Cal_File, &(cal->baro2_cal_5), 2, &bc);
+	res += f_write(&Cal_File, &(cal_container->baro2_cal_5), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Cal_File, &(cal->baro2_cal_6), 2, &bc);
+	res += f_write(&Cal_File, &(cal_container->baro2_cal_6), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Cal_File, &(cal->accel_sens), 2, &bc);
+	res += f_write(&Cal_File, &(cal_container->accel_sens), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Cal_File, &(cal->gyro_sens), 2, &bc);
+	res += f_write(&Cal_File, &(cal_container->gyro_sens), 2, &bc);
 	*buffer_size += bc;
 
 	res += f_close(&Cal_File);
@@ -308,8 +309,6 @@ FRESULT write_to_file(data_t *data, uint16_t *buffer_size) {
 	res = f_write(&Data_File, &(data->temp_th), 2, &bc);
 	*buffer_size += bc;
 	res = f_write(&Data_File, &(data->temp_ok), 1, &bc);
-	*buffer_size += bc;
-
 	*buffer_size += bc;
 	if (res != FR_OK) {
 		if (DEBUG_PRINT == 1)

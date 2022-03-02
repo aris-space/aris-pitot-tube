@@ -97,36 +97,36 @@ volatile uint32_t tick = 0;
 osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
-  .stack_size = 512 * 4,
-  .priority = (osPriority_t) osPriorityBelowNormal,
+  .stack_size = 1024 * 4,
+  .priority = (osPriority_t) osPriorityBelowNormal1,
 };
 /* Definitions for accelTask */
 osThreadId_t accelTaskHandle;
 const osThreadAttr_t accelTask_attributes = {
   .name = "accelTask",
-  .stack_size = 512 * 4,
-  .priority = (osPriority_t) osPriorityNormal1,
+  .stack_size = 1024 * 4,
+  .priority = (osPriority_t) osPriorityHigh,
 };
 /* Definitions for baroTask */
 osThreadId_t baroTaskHandle;
 const osThreadAttr_t baroTask_attributes = {
   .name = "baroTask",
-  .stack_size = 512 * 4,
-  .priority = (osPriority_t) osPriorityNormal3,
+  .stack_size = 1024 * 4,
+  .priority = (osPriority_t) osPriorityAboveNormal,
 };
 /* Definitions for tempTask */
 osThreadId_t tempTaskHandle;
 const osThreadAttr_t tempTask_attributes = {
   .name = "tempTask",
-  .stack_size = 512 * 4,
-  .priority = (osPriority_t) osPriorityNormal4,
+  .stack_size = 1024 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for SDTask */
 osThreadId_t SDTaskHandle;
 const osThreadAttr_t SDTask_attributes = {
   .name = "SDTask",
   .stack_size = 4096 * 4,
-  .priority = (osPriority_t) osPriorityHigh,
+  .priority = (osPriority_t) osPriorityBelowNormal,
 };
 /* Definitions for baro1_mutex */
 osMutexId_t baro1_mutexHandle;
@@ -302,10 +302,18 @@ void StartDefaultTask(void *argument)
 		// if average of last measurement buffer is < 1.5g
 		// and gyros not moving then go into good_night_mode
 		if (good_night_mode == 0) {
-			if (device_is_idle(&CAL, &DATA, IDLE_DETECT_LEN) == 1) {
-				good_night_mode = 1;
+			if (osMutexAcquire(accel_mutexHandle, ACCEL_MUTEX_TIMEOUT)){
+				if (device_is_idle(&CAL, &DATA, IDLE_DETECT_LEN) == 1) {
+					if (osMutexAcquire(log_mutexHandle, LOG_MUTEX_TIMEOUT) == osOK) {
+						sprintf(log_buffer, "%lu, going to sleep \n", HAL_GetTick());
+						log_msg(LOG_NAME,log_buffer);
+						osMutexRelease(log_mutexHandle);
+					}
+					good_night_mode = 1;
+				}
+				DATA.flight_phase = launch_detect(&CAL, &DATA, LAUNCH_DETECT_LEN);
+				osMutexRelease(accel_mutexHandle);
 			}
-			DATA.flight_phase = launch_detect(&CAL, &DATA, LAUNCH_DETECT_LEN);
 		} else {
 			osSemaphoreAcquire(sleepSemHandle, portMAX_DELAY);
 			osThreadSuspend(defaultTaskHandle);
@@ -335,10 +343,8 @@ void StartAccelTask(void *argument)
 	for (;;) {
 
 		if (good_night_mode == 1) {
-			printf("setting IMU to standby config \n");
 			icm20601_standby(&IMU);
 			sem_count = osSemaphoreGetCount(sleepSemHandle);
-			printf("waiting for other tasks \n");
 			while (sem_count != 0) {
 				turn_on(&RDY);
 				turn_on(&STAT);
@@ -347,9 +353,7 @@ void StartAccelTask(void *argument)
 				turn_off(&STAT);
 				osDelay(50);
 				sem_count = osSemaphoreGetCount(sleepSemHandle);
-				printf("Semaphore count on IMU task %u \n", sem_count);
 			}
-			printf("going to sleep \n");
 			osDelay(100);
 			turn_off(&RDY);
 			turn_off(&STAT);
@@ -368,8 +372,8 @@ void StartAccelTask(void *argument)
 			if (DEBUG_PRINT == 1)
 				icm20601_read_data(&IMU, a);
 			accel_stat = icm20601_read_accel_raw(&IMU, accel_raw);
-			icm20601_read_gyro_raw(&IMU, gyro_raw);
-			icm20601_read_temp(&IMU, &accel_temperature);
+			accel_stat += icm20601_read_gyro_raw(&IMU, gyro_raw);
+			accel_stat += icm20601_read_temp(&IMU, &accel_temperature);
 			if (accel_stat == HAL_OK) {
 				/* If the Mutex is acquired we write the data into the right variable */
 				if (osMutexAcquire(accel_mutexHandle, ACCEL_MUTEX_TIMEOUT)
@@ -384,7 +388,22 @@ void StartAccelTask(void *argument)
 					osMutexRelease(accel_mutexHandle);
 				}
 			} else {
-				// TODO: if sensor is not okay/timeout do a re-init and log to file
+				if (osMutexAcquire(log_mutexHandle, LOG_MUTEX_TIMEOUT) == osOK) {
+					sprintf(log_buffer, "%lu, error on imu: %d, re-initing\n", HAL_GetTick(), accel_stat);
+					log_msg(LOG_NAME,log_buffer);
+					osMutexRelease(log_mutexHandle);
+
+				}
+				uint8_t imu_rdy = icm20601_init(&IMU);
+				while (imu_rdy != 1) {
+					imu_rdy = icm20601_init(&IMU);
+					osDelay(100);
+				}
+				if (osMutexAcquire(log_mutexHandle, LOG_MUTEX_TIMEOUT) == osOK) {
+					sprintf(log_buffer, "%lu, imu init success\n", HAL_GetTick());
+					log_msg(LOG_NAME,log_buffer);
+					osMutexRelease(log_mutexHandle);
+				}
 			}
 
 		}
@@ -427,17 +446,23 @@ void StartBaroTask(void *argument)
 					osMutexRelease(baro1_mutexHandle);
 				}
 			} else {
-				// TODO: if sensor is not okay/timeout do a re-init and log to file
-				sprintf(log_buffer, "%u, error on baro1: %d, re-initing\n", HAL_GetTick(), baro1_stat);
-				log_msg(LOG_NAME,log_buffer);
+				if (osMutexAcquire(log_mutexHandle, LOG_MUTEX_TIMEOUT) == osOK) {
+					sprintf(log_buffer, "%lu, error on baro1: %d, re-initing\n", HAL_GetTick(), baro1_stat);
+					log_msg(LOG_NAME,log_buffer);
+					osMutexRelease(log_mutexHandle);
+
+				}
 
 				uint8_t baro1_rdy = ms5803_init(&BARO1);
 				while (baro1_rdy != 1) {
 					baro1_rdy = ms5803_init(&BARO1);
 					osDelay(100);
 				}
-				sprintf(log_buffer, "%u, baro1 init success\n", HAL_GetTick(), baro1_stat);
-				log_msg(LOG_NAME,log_buffer);
+				if (osMutexAcquire(log_mutexHandle, LOG_MUTEX_TIMEOUT) == osOK) {
+					sprintf(log_buffer, "%lu, baro1 init success\n", HAL_GetTick());
+					log_msg(LOG_NAME,log_buffer);
+					osMutexRelease(log_mutexHandle);
+				}
 			}
 
 			if (baro2_stat == HAL_OK) {
@@ -448,18 +473,22 @@ void StartBaroTask(void *argument)
 					osMutexRelease(baro2_mutexHandle);
 				}
 			} else {
-				// TODO: if sensor is not okay/timeout do a re-init and log to file
-				sprintf(log_buffer, "%u, error on baro2: %d, re-initing\n", HAL_GetTick(), baro2_stat);
-				log_msg(LOG_NAME,log_buffer);
+				if (osMutexAcquire(log_mutexHandle, LOG_MUTEX_TIMEOUT) == osOK) {
+					sprintf(log_buffer, "%lu, error on baro2: %d, re-initing\n", HAL_GetTick(), baro2_stat);
+					log_msg(LOG_NAME,log_buffer);
+					osMutexRelease(log_mutexHandle);
+				}
 
 				uint8_t baro2_rdy = ms5803_init(&BARO2);
 				while (baro2_rdy != 1) {
 					baro2_rdy = ms5803_init(&BARO2);
 					osDelay(100);
 				}
-				bufclear(log_buffer);
-				sprintf(log_buffer, "%u, baro2 init success\n", HAL_GetTick(), baro2_stat);
-				log_msg(LOG_NAME,log_buffer);
+				if (osMutexAcquire(log_mutexHandle, LOG_MUTEX_TIMEOUT) == osOK) {
+					sprintf(log_buffer, "%lu, baro2 init success\n", HAL_GetTick());
+					log_msg(LOG_NAME,log_buffer);
+					osMutexRelease(log_mutexHandle);
+				}
 			}
 
 			if (DEBUG_PRINT == 1)
@@ -501,7 +530,23 @@ void StartTempTask(void *argument)
 					osMutexRelease(temp_mutexHandle);
 				}
 			} else {
-				// TODO: if sensor is not okay/timeout do a re-init and log to file
+				if (osMutexAcquire(log_mutexHandle, LOG_MUTEX_TIMEOUT) == osOK) {
+					sprintf(log_buffer, "%lu, error on temp: %d, re-initing\n", HAL_GetTick(), temp_stat);
+					log_msg(LOG_NAME,log_buffer);
+					osMutexRelease(log_mutexHandle);
+
+				}
+
+				uint8_t temp_rdy = mcp9600_init(&TEMP);
+				while (temp_rdy != 1) {
+					temp_rdy = mcp9600_init(&TEMP);
+					osDelay(100);
+				}
+				if (osMutexAcquire(log_mutexHandle, LOG_MUTEX_TIMEOUT) == osOK) {
+					sprintf(log_buffer, "%lu, baro1 init success\n", HAL_GetTick());
+					log_msg(LOG_NAME,log_buffer);
+					osMutexRelease(log_mutexHandle);
+				}
 			}
 		} else {
 			osSemaphoreAcquire(sleepSemHandle, portMAX_DELAY);
@@ -526,38 +571,40 @@ void StartSDTask(void *argument)
 	uint16_t buffer_size = 0;
 	uint16_t line_counter = 0;
 	FRESULT res = FR_OK;
+	if (osMutexAcquire(log_mutexHandle, LOG_MUTEX_TIMEOUT) == osOK) {
 
-	printf("mounting SD card \n");
-	mount_sd_card();
+		printf("mounting SD card \n");
+		mount_sd_card();
 
-	setup_dir(&num_dir);
+		setup_dir(&num_dir);
 
-	num_dat_file = 0;
+		num_dat_file = 0;
 
-	sprintf(FILE_NAME, "DAT%04u/FD%04u.BIN", (unsigned int) num_dir,
-			(unsigned int) num_dat_file);
-	if (DEBUG_PRINT == 1)
-		printf("saving %s ... \n", FILE_NAME);
+		sprintf(FILE_NAME, "DAT%04u/FD%04u.BIN", (unsigned int) num_dir,
+				(unsigned int) num_dat_file);
+		if (DEBUG_PRINT == 1)
+			printf("saving %s ... \n", FILE_NAME);
 
-	sprintf(CAL_NAME, "DAT%04u/CAL.BIN", (unsigned int) num_dir);
-	if (DEBUG_PRINT == 1)
-		printf("saving %s ... \n", CAL_NAME);
+		sprintf(CAL_NAME, "DAT%04u/CAL.BIN", (unsigned int) num_dir);
+		if (DEBUG_PRINT == 1)
+			printf("saving %s ... \n", CAL_NAME);
 
-	sprintf(LOG_NAME, "DAT%04u/LOG.CSV", (unsigned int) num_dir);
-	if (DEBUG_PRINT == 1)
-		printf("saving %s ... \n", LOG_NAME);
+		sprintf(LOG_NAME, "DAT%04u/LOG.CSV", (unsigned int) num_dir);
+		if (DEBUG_PRINT == 1)
+			printf("saving %s ... \n", LOG_NAME);
 
-	init_log(LOG_NAME);
+		init_log(LOG_NAME);
 
-	if (write_cal_file(CAL_NAME, &CAL, &buffer_size) != FR_OK) {
-		while (1) {
-			toggle(&RDY);
-			osDelay(250);
-			toggle(&STAT);
-			osDelay(250);
+		if (write_cal_file(CAL_NAME, &CAL, &buffer_size) != FR_OK) {
+			while (1) {
+				toggle(&RDY);
+				osDelay(250);
+				toggle(&STAT);
+				osDelay(250);
+			}
 		}
+		osMutexRelease(log_mutexHandle);
 	}
-
 	res = open_file(FILE_NAME);
 
 	/* Infinite loop */
@@ -600,14 +647,13 @@ void StartSDTask(void *argument)
 
 			res = write_to_file(&DATA, &buffer_size);
 			if (buffer_size > WRITE_BUFFER_SIZE) {
-				turn_on(&RDY);
-				res = flush_buffer();
+				// res = flush_buffer();
 				buffer_size = 0;
-				turn_off(&RDY);
 			}
 
 			line_counter++;
 			if (line_counter > SECONDS_PER_FILE * 1000 / SAVE_INTERVAL) {
+				turn_on(&RDY);
 				buffer_size = 0;
 				line_counter = 0;
 				num_dat_file++;
@@ -616,6 +662,7 @@ void StartSDTask(void *argument)
 				sprintf(FILE_NAME, "DAT%04u/FD%04u.BIN", (unsigned int) num_dir,
 						(unsigned int) num_dat_file);
 				res = open_file(FILE_NAME);
+				turn_off(&RDY);
 			}
 
 			if (DEBUG_PRINT == 1)
@@ -656,9 +703,14 @@ void StartSDTask(void *argument)
 			osSemaphoreAcquire(sleepSemHandle, portMAX_DELAY);
 			osThreadSuspend(SDTaskHandle);
 		}
-		if (res != FR_OK)
-			// TODO: log to file
+		if (res != FR_OK){
 			remount_sd_card();
+			if (osMutexAcquire(log_mutexHandle, LOG_MUTEX_TIMEOUT) == osOK) {
+				sprintf(log_buffer, "%lu, error on SD card: %d, re-mounted...\n", HAL_GetTick(), res);
+				log_msg(LOG_NAME,log_buffer);
+				osMutexRelease(log_mutexHandle);
+			}
+		}
 		osDelay(SAVE_INTERVAL);
 	}
   /* USER CODE END StartSDTask */
