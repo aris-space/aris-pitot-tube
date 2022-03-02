@@ -13,6 +13,21 @@
 FATFS Fat_Fs;
 FIL Data_File;
 FIL Cal_File;
+FIL Log_File;
+
+uint16_t bufsize(char *buf) {
+	int i = 0;
+	while (*buf++ != '\0')
+		i++;
+	return i;
+}
+
+void bufclear(char *buffer)  // clear buffer
+{
+	for (int i = 0; i < BUFLEN; i++) {
+		buffer[i] = '\0';
+	}
+}
 
 void mount_sd_card() {
 	FRESULT res;
@@ -21,8 +36,6 @@ void mount_sd_card() {
 		if (res != FR_OK) {
 			if (DEBUG_PRINT == 1)
 				printf("[STORAGE TASK] Failed mounting SD card: %d\n", res);
-			// force sd card to be reinitialized
-			//HAL_GPIO_WritePin(BUZZER_GPIO_Port, BUZZER_Pin, GPIO_PIN_SET);
 			osDelay(10);
 		} else {
 			if (DEBUG_PRINT == 1)
@@ -31,9 +44,21 @@ void mount_sd_card() {
 	} while (res != FR_OK);
 }
 
+void unmount_sd_card() {
+	FRESULT res;
+	res = f_mount(0, "", 1);
+	if (res != FR_OK) {
+		if (DEBUG_PRINT == 1)
+			printf("[STORAGE TASK] Failed unmounting SD card: %d\n", res);
+	} else {
+		if (DEBUG_PRINT == 1)
+			printf("[STORAGE TASK] SD card unmounted \n");
+	}
+}
+
 void remount_sd_card() {
 	FRESULT res;
-	// f_close(&EULER_LOG_FILE);
+	close_file();
 	do {
 		HAL_SD_DeInit(&hsd);
 		MX_SDIO_SD_Init();
@@ -55,7 +80,7 @@ void remount_sd_card() {
 	} while (res != FR_OK);
 }
 
-FRESULT setup_dir(uint16_t * num_dir) {
+FRESULT setup_dir(uint16_t *num_dir) {
 	DIR dirs;
 	char *fn;
 	FILINFO Finfo;
@@ -77,7 +102,7 @@ FRESULT setup_dir(uint16_t * num_dir) {
 		}
 	}
 	(*num_dir)++;
-	sprintf(dir_path, "DAT%04u", (unsigned int)*num_dir);
+	sprintf(dir_path, "DAT%04u", (unsigned int) *num_dir);
 	printf("creating new folder with name: %s OK.\n", dir_path);
 	res = f_mkdir(dir_path);
 	if (res == FR_OK) {
@@ -124,7 +149,6 @@ FRESULT get_file_numbers(uint16_t *cnt1, uint16_t *cnt2) {
 	return res;
 }
 
-
 FRESULT open_file(char *file_name) {
 	FRESULT res;
 	if (DEBUG_PRINT == 1)
@@ -158,8 +182,41 @@ FRESULT close_file(void) {
 	return res;
 }
 
+FRESULT init_log(char *file_name) {
+	char msg[128];
+	FRESULT res;
 
-FRESULT write_cal_file(char *file_name, cal_t *cal, uint16_t *buffer_size) {
+	sprintf(msg, "t = %lu, successfully created log file\n", HAL_GetTick());
+	res = f_open(&Log_File, file_name, FA_OPEN_APPEND | FA_WRITE);
+	// write the string to the file
+	res = f_puts(msg, &Log_File);
+	f_close(&Log_File);
+
+	return res;
+}
+
+FRESULT log_msg(char *file_name, char *message) {
+	FRESULT res;
+
+	printf("[LOGGING] %s", message);
+	// Open the file with write access
+	res = f_open(&Log_File, file_name, FA_OPEN_APPEND | FA_WRITE);
+
+	// Move to offset to the end of the file
+	res = f_lseek((&Log_File), f_size(&Log_File));
+
+	// write the string to the file
+	res = f_puts(message, &Log_File);
+
+	// Close file
+	f_close(&Log_File);
+
+	bufclear(message);
+
+	return res;
+}
+
+FRESULT write_cal_file(char *file_name, cal_t *cal_container, uint16_t *buffer_size) {
 	FRESULT res;
 	UINT bc; /* Data read/write count */
 	if (DEBUG_PRINT == 1)
@@ -168,33 +225,33 @@ FRESULT write_cal_file(char *file_name, cal_t *cal, uint16_t *buffer_size) {
 
 	res = f_open(&Cal_File, file_name, FA_OPEN_APPEND | FA_WRITE);
 
-	res += f_write(&Cal_File, &(cal->baro1_cal_1), 2, &bc);
+	res += f_write(&Cal_File, &(cal_container->baro1_cal_1), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Cal_File, &(cal->baro1_cal_2), 2, &bc);
+	res += f_write(&Cal_File, &(cal_container->baro1_cal_2), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Cal_File, &(cal->baro1_cal_3), 2, &bc);
+	res += f_write(&Cal_File, &(cal_container->baro1_cal_3), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Cal_File, &(cal->baro1_cal_4), 2, &bc);
+	res += f_write(&Cal_File, &(cal_container->baro1_cal_4), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Cal_File, &(cal->baro1_cal_5), 2, &bc);
+	res += f_write(&Cal_File, &(cal_container->baro1_cal_5), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Cal_File, &(cal->baro1_cal_6), 2, &bc);
+	res += f_write(&Cal_File, &(cal_container->baro1_cal_6), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Cal_File, &(cal->baro2_cal_1), 2, &bc);
+	res += f_write(&Cal_File, &(cal_container->baro2_cal_1), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Cal_File, &(cal->baro2_cal_2), 2, &bc);
+	res += f_write(&Cal_File, &(cal_container->baro2_cal_2), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Cal_File, &(cal->baro2_cal_3), 2, &bc);
+	res += f_write(&Cal_File, &(cal_container->baro2_cal_3), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Cal_File, &(cal->baro2_cal_4), 2, &bc);
+	res += f_write(&Cal_File, &(cal_container->baro2_cal_4), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Cal_File, &(cal->baro2_cal_5), 2, &bc);
+	res += f_write(&Cal_File, &(cal_container->baro2_cal_5), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Cal_File, &(cal->baro2_cal_6), 2, &bc);
+	res += f_write(&Cal_File, &(cal_container->baro2_cal_6), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Cal_File, &(cal->accel_sens), 2, &bc);
+	res += f_write(&Cal_File, &(cal_container->accel_sens), 2, &bc);
 	*buffer_size += bc;
-	res += f_write(&Cal_File, &(cal->gyro_sens), 2, &bc);
+	res += f_write(&Cal_File, &(cal_container->gyro_sens), 2, &bc);
 	*buffer_size += bc;
 
 	res += f_close(&Cal_File);
@@ -253,16 +310,14 @@ FRESULT write_to_file(data_t *data, uint16_t *buffer_size) {
 	*buffer_size += bc;
 	res = f_write(&Data_File, &(data->temp_ok), 1, &bc);
 	*buffer_size += bc;
-
-	printf("okay, I'm writing temp = %d C.\n", data->accel_t);
-	*buffer_size += bc;
 	if (res != FR_OK) {
 		if (DEBUG_PRINT == 1)
 			printf("[STORAGE TASK] Failed saving data: %d\n", res);
 		return res;
 	} else {
 		if (DEBUG_PRINT == 1)
-			printf("[STORAGE TASK] done, wrote %u bytes.\n", (unsigned int)*buffer_size);
+			printf("[STORAGE TASK] done, wrote %u bytes.\n",
+					(unsigned int) *buffer_size);
 	}
 	return res;
 }

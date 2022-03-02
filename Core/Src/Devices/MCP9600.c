@@ -13,9 +13,10 @@
 
 int mcp9600_init(struct mcp9600_dev *dev) {
 	if (HAL_I2C_GetState(dev->i2c_bus) != HAL_I2C_STATE_READY) {
-		printf("i2c1 not ready!\n");
+		printf("i2c2 not ready!\n");
+		return 0;
 	} else {
-		printf("i2c1 is ready!\n");
+		printf("i2c2 is ready!\n");
 	}
 
 	HAL_StatusTypeDef _ret;

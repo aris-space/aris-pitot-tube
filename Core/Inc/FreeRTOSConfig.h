@@ -68,7 +68,7 @@
 #define configTICK_RATE_HZ                       ((TickType_t)1000)
 #define configMAX_PRIORITIES                     ( 56 )
 #define configMINIMAL_STACK_SIZE                 ((uint16_t)128)
-#define configTOTAL_HEAP_SIZE                    ((size_t)30000)
+#define configTOTAL_HEAP_SIZE                    ((size_t)40000)
 #define configMAX_TASK_NAME_LEN                  ( 16 )
 #define configUSE_TRACE_FACILITY                 1
 #define configUSE_16_BIT_TICKS                   0
@@ -79,7 +79,7 @@
 #define configUSE_PORT_OPTIMISED_TASK_SELECTION  0
 /* USER CODE BEGIN MESSAGE_BUFFER_LENGTH_TYPE */
 /* Defaults to size_t for backward compatibility, but can be changed
-   if lengths will always be less than the number of bytes in a size_t. */
+ if lengths will always be less than the number of bytes in a size_t. */
 #define configMESSAGE_BUFFER_LENGTH_TYPE         size_t
 /* USER CODE END MESSAGE_BUFFER_LENGTH_TYPE */
 
@@ -169,11 +169,16 @@ standard names. */
 /* USER CODE BEGIN Defines */
 /* Section where parameter definitions can be added (for instance, to override default ones in FreeRTOS.h) */
 
-#define SAVE_INTERVAL 10
+#define SAVE_INTERVAL 1
 #define BARO_INTERVAL 10
 #define IMU_INTERVAL 10
 #define TEMP_INTERVAL 10
 #define CHECK_IDLE_INTERVAL 100
+
+#define BARO_MUTEX_TIMEOUT 0
+#define LOG_MUTEX_TIMEOUT osWaitForever
+#define ACCEL_MUTEX_TIMEOUT 0
+#define TEMP_MUTEX_TIMEOUT 0
 
 /* USER CODE END Defines */
 

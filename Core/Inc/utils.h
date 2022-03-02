@@ -57,12 +57,10 @@
   }
 
 enum fph {
-  PAD_IDLE = 1,
-  FLIGHT = 2,
+	PAD_IDLE = 1, FLIGHT = 2,
 };
 
-
-typedef struct cal_container {
+typedef struct {
 	uint16_t baro1_cal_1;
 	uint16_t baro1_cal_2;
 	uint16_t baro1_cal_3;
@@ -79,7 +77,30 @@ typedef struct cal_container {
 	uint16_t gyro_sens;
 } cal_t;
 
-typedef struct data_container {
+typedef struct {
+	uint32_t tick;
+	uint32_t baro_D1;
+	uint32_t baro_D2;
+} baro_data_t;
+
+typedef struct {
+	uint32_t tick;
+	int16_t accel_x;
+	int16_t accel_y;
+	int16_t accel_z;
+	int16_t gyro_x;
+	int16_t gyro_y;
+	int16_t gyro_z;
+	int16_t accel_t;
+} accel_data_t;
+
+typedef struct {
+	uint32_t tick;
+	int16_t temp_th;
+	int16_t temp_tc;
+} temp_data_t;
+
+typedef struct {
 	uint32_t tick;
 	uint8_t flight_phase;
 	int16_t accel_x;
@@ -101,7 +122,7 @@ typedef struct data_container {
 	uint8_t temp_ok;
 } data_t;
 
-uint8_t device_is_idle(cal_t *LOG, data_t *DATA, uint32_t len);
-uint8_t launch_detect(cal_t *LOG, data_t *DATA, uint32_t len);
+uint8_t device_is_idle(cal_t *cal_container, data_t *data_container, uint32_t len);
+uint8_t launch_detect(cal_t *cal_container, data_t *data_container, uint32_t len);
 
 #endif /* INC_UTILS_H_ */
