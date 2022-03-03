@@ -424,7 +424,9 @@ void StartBaroTask(void *argument)
   /* USER CODE BEGIN StartBaroTask */
 	uint8_t baro1_stat = HAL_TIMEOUT;
 	uint8_t baro2_stat = HAL_TIMEOUT;
-	uint32_t wait_time = _get_conversion_ticks(dev);
+
+	// wait time is the same for both baros, so just take the first
+	uint32_t wait_time = ms5803_get_conversion_ticks(&BARO1);
 	/* Infinite loop */
 	for (;;) {
 
