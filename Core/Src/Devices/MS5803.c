@@ -6,11 +6,12 @@
 #include <devices/MS5803.h>
 #include <stdio.h>
 #include <math.h>
+#include "cmsis_os.h"
 
 
 uint32_t ms5803_get_conversion_ticks(struct ms5803_dev * dev){
 	uint32_t time;
-	time = (BARO_CONVERSION_TIME_OSR_BASE * (dev->osr+1) * osKernelGetTickFreq()) / 1000;
+	time = (BARO_CONVERSION_TIME_OSR_BASE * (pow(2,dev->osr) + 1) * osKernelGetTickFreq()) / 1000;
 	if (time < 1) time = 1;
 	return time;
 }
