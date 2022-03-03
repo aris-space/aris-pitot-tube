@@ -25,6 +25,7 @@
 #include "i2c.h"
 #include "sdio.h"
 #include "spi.h"
+#include "tim.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -60,7 +61,16 @@ void MX_FREERTOS_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+volatile unsigned long ulHighFrequencyTimerTicks;
 
+void configureTimerForRunTimeStats(void) {
+  ulHighFrequencyTimerTicks = 0;
+  HAL_TIM_Base_Start_IT(&htim13);
+}
+
+unsigned long getRunTimeCounterValue(void) {
+  return ulHighFrequencyTimerTicks;
+}
 /* USER CODE END 0 */
 
 /**
@@ -97,6 +107,7 @@ int main(void)
   MX_SPI1_Init();
   MX_DMA_Init();
   MX_FATFS_Init();
+  MX_TIM13_Init();
   /* USER CODE BEGIN 2 */
 
 	HAL_Delay(1000);
