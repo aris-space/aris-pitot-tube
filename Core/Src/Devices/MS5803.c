@@ -7,6 +7,14 @@
 #include <stdio.h>
 #include <math.h>
 
+
+uint32_t ms5803_get_conversion_ticks(struct ms5803_dev * dev){
+	uint32_t time;
+	time = (BARO_CONVERSION_TIME_OSR_BASE * (dev->osr+1) * osKernelGetTickFreq()) / 1000;
+	if (time < 1) time = 1;
+	return time;
+}
+
 uint8_t ms5803_init(struct ms5803_dev *dev) {
 	if (HAL_I2C_GetState(dev->i2c_bus) != HAL_I2C_STATE_READY) {
 		printf("i2c not ready!\n");
@@ -26,7 +34,7 @@ uint8_t ms5803_init(struct ms5803_dev *dev) {
 	//reset (advised in datasheet)
 
 	uint8_t reset_code[1];
-	reset_code[0] = 0x1E;
+	reset_code[0] = COMMAND_RESET;
 	_ret = HAL_I2C_Master_Transmit(dev->i2c_bus, dev->addr, reset_code, 1,
 			dev->delay);
 
@@ -41,7 +49,7 @@ uint8_t ms5803_init(struct ms5803_dev *dev) {
 	for (int i = 1; i < 7; i++) {
 
 		//standard commands (see datasheet)
-		get_add = 0b10100000;
+		get_add = COMMAND_PROM_READ_BASE;
 		get_add = get_add + 2 * i;
 
 		HAL_I2C_Master_Transmit(dev->i2c_bus, dev->addr, &get_add, 1,
@@ -59,9 +67,8 @@ uint8_t ms5803_init(struct ms5803_dev *dev) {
 
 	printf("BARO setup success\n");
 
-	buf[0] = 0x44;
+	buf[0] = COMMAND_CONVERT_D1_BASE + (dev->osr * 2); //0x44;
 	HAL_I2C_Master_Transmit(dev->i2c_bus, dev->addr, buf, 1, dev->delay);
-	osDelay(3);
 	// need to wait 3 ms
 	return 1;
 }
@@ -69,7 +76,7 @@ uint8_t ms5803_init(struct ms5803_dev *dev) {
 uint8_t ms5803_prep_pressure(struct ms5803_dev *dev) {
 	uint8_t buf[3];
 	uint8_t res;
-	buf[0] = 0x00;
+	buf[0] = COMMAND_ADC_READ;
 
 	HAL_I2C_Master_Transmit(dev->i2c_bus, dev->addr, buf, 1, dev->delay);
 	res = HAL_I2C_Master_Receive(dev->i2c_bus, dev->addr, buf, 3, dev->delay);
@@ -77,7 +84,7 @@ uint8_t ms5803_prep_pressure(struct ms5803_dev *dev) {
 	dev->D1 = (uint32_t) (buf[0] << 16) | (uint32_t) (buf[1] << 8)
 			| (uint32_t) buf[2];
 
-	buf[0] = 0x54;
+	buf[0] = COMMAND_CONVERT_D2_BASE + (dev->osr * 2); //0x54;
 	HAL_I2C_Master_Transmit(dev->i2c_bus, dev->addr, buf, 1, dev->delay);
 	return res;
 	// need to wait 3 ms
@@ -86,7 +93,7 @@ uint8_t ms5803_prep_pressure(struct ms5803_dev *dev) {
 uint8_t ms5803_read_pressure(struct ms5803_dev *dev) {
 	uint8_t buf[3];
 	uint8_t res;
-	buf[0] = 0x00;
+	buf[0] = COMMAND_ADC_READ;
 
 	HAL_I2C_Master_Transmit(dev->i2c_bus, dev->addr, buf, 1, dev->delay);
 	res = HAL_I2C_Master_Receive(dev->i2c_bus, dev->addr, buf, 3, dev->delay);
@@ -94,7 +101,7 @@ uint8_t ms5803_read_pressure(struct ms5803_dev *dev) {
 	dev->D2 = (uint32_t) (buf[0] << 16) | (uint32_t) (buf[1] << 8)
 			| (uint32_t) buf[2];
 
-	buf[0] = 0x44;
+	buf[0] = COMMAND_CONVERT_D1_BASE + (dev->osr * 2); //0x44;
 	HAL_I2C_Master_Transmit(dev->i2c_bus, dev->addr, buf, 1, dev->delay);
 	// need to wait 3 ms
 	return res;
