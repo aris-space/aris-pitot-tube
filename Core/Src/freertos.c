@@ -424,17 +424,17 @@ void StartBaroTask(void *argument)
   /* USER CODE BEGIN StartBaroTask */
 	uint8_t baro1_stat = HAL_TIMEOUT;
 	uint8_t baro2_stat = HAL_TIMEOUT;
-
+	uint32_t wait_time = _get_conversion_ticks(dev);
 	/* Infinite loop */
 	for (;;) {
 
 		if (good_night_mode == 0) {
 
-			osDelay(3);
+			osDelay(wait_time);
 			ms5803_prep_pressure(&BARO1);
 			ms5803_prep_pressure(&BARO2);
 
-			osDelay(3);
+			osDelay(wait_time);
 			baro1_stat = ms5803_read_pressure(&BARO1);
 			baro2_stat = ms5803_read_pressure(&BARO2);
 
