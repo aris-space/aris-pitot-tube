@@ -98,7 +98,7 @@ osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
   .stack_size = 1024 * 4,
-  .priority = (osPriority_t) osPriorityBelowNormal1,
+  .priority = (osPriority_t) osPriorityBelowNormal,
 };
 /* Definitions for accelTask */
 osThreadId_t accelTaskHandle;
@@ -112,21 +112,33 @@ osThreadId_t baroTaskHandle;
 const osThreadAttr_t baroTask_attributes = {
   .name = "baroTask",
   .stack_size = 1024 * 4,
-  .priority = (osPriority_t) osPriorityAboveNormal,
+  .priority = (osPriority_t) osPriorityAboveNormal1,
 };
 /* Definitions for tempTask */
 osThreadId_t tempTaskHandle;
 const osThreadAttr_t tempTask_attributes = {
   .name = "tempTask",
   .stack_size = 1024 * 4,
-  .priority = (osPriority_t) osPriorityNormal,
+  .priority = (osPriority_t) osPriorityBelowNormal,
 };
 /* Definitions for SDTask */
 osThreadId_t SDTaskHandle;
 const osThreadAttr_t SDTask_attributes = {
   .name = "SDTask",
   .stack_size = 4096 * 4,
-  .priority = (osPriority_t) osPriorityBelowNormal,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+/* Definitions for gatherTask */
+osThreadId_t gatherTaskHandle;
+const osThreadAttr_t gatherTask_attributes = {
+  .name = "gatherTask",
+  .stack_size = 1024 * 4,
+  .priority = (osPriority_t) osPriorityAboveNormal,
+};
+/* Definitions for SDQueue */
+osMessageQueueId_t SDQueueHandle;
+const osMessageQueueAttr_t SDQueue_attributes = {
+  .name = "SDQueue"
 };
 /* Definitions for baro1_mutex */
 osMutexId_t baro1_mutexHandle;
@@ -169,6 +181,7 @@ void StartAccelTask(void *argument);
 void StartBaroTask(void *argument);
 void StartTempTask(void *argument);
 void StartSDTask(void *argument);
+void StartGatherTask(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -257,6 +270,10 @@ void MX_FREERTOS_Init(void) {
 	/* start timers, add new ones, ... */
   /* USER CODE END RTOS_TIMERS */
 
+  /* Create the queue(s) */
+  /* creation of SDQueue */
+  SDQueueHandle = osMessageQueueNew (100, sizeof(data_t), &SDQueue_attributes);
+
   /* USER CODE BEGIN RTOS_QUEUES */
 	/* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
@@ -276,6 +293,9 @@ void MX_FREERTOS_Init(void) {
 
   /* creation of SDTask */
   SDTaskHandle = osThreadNew(StartSDTask, NULL, &SDTask_attributes);
+
+  /* creation of gatherTask */
+  gatherTaskHandle = osThreadNew(StartGatherTask, NULL, &gatherTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
 	/* add threads, ... */
@@ -339,9 +359,11 @@ void StartAccelTask(void *argument)
 	int16_t gyro_raw[3] = { 0 };
 	uint8_t accel_stat = HAL_TIMEOUT;
 	uint8_t sem_count = 0;
+	uint32_t tick_count = 0;
 	/* Infinite loop */
 	for (;;) {
 
+		tick_count = osKernelGetTickCount();
 		if (good_night_mode == 1) {
 			icm20601_standby(&IMU);
 			sem_count = osSemaphoreGetCount(sleepSemHandle);
@@ -407,7 +429,8 @@ void StartAccelTask(void *argument)
 			}
 
 		}
-		osDelay(IMU_INTERVAL);
+		osDelayUntil(tick_count + 1);
+		// osDelay(IMU_INTERVAL);
 	}
   /* USER CODE END StartAccelTask */
 }
@@ -573,6 +596,9 @@ void StartSDTask(void *argument)
 	uint16_t buffer_size = 0;
 	uint16_t line_counter = 0;
 	FRESULT res = FR_OK;
+	uint32_t buffer_len = 0;
+	data_t DATA_RECEIVE = DATA_CONTAINER_INIT();
+
 	if (osMutexAcquire(log_mutexHandle, LOG_MUTEX_TIMEOUT) == osOK) {
 
 		printf("mounting SD card \n");
@@ -612,93 +638,74 @@ void StartSDTask(void *argument)
 	/* Infinite loop */
 	for (;;) {
 
-		tick = HAL_GetTick();
-		DATA.tick = tick;
-
 		if (good_night_mode == 0) {
+			buffer_len = osMessageQueueGetCount(SDQueueHandle);
+			printf("queue length: %u \n", (unsigned int)osMessageQueueGetCount(SDQueueHandle));
+			printf("SD_BUFFER_LEN: %d \n", (int)SD_BUFFER_LEN);
 
-			if (osMutexAcquire(accel_mutexHandle, ACCEL_MUTEX_TIMEOUT)
-					== osOK) {
-				DATA.accel_t = accel_data.accel_t;
-				DATA.accel_x = accel_data.accel_x;
-				DATA.accel_y = accel_data.accel_y;
-				DATA.accel_z = accel_data.accel_z;
-				DATA.gyro_x = accel_data.gyro_x;
-				DATA.gyro_y = accel_data.gyro_y;
-				DATA.gyro_z = accel_data.gyro_z;
-				osMutexRelease(accel_mutexHandle);
+			if (buffer_len  < (int)SD_BUFFER_LEN - 1){
+				osDelay(1);
+				printf("queue too short \n");
+				continue;
+			} else {
+				for (int j = 0; j < (int)SD_BUFFER_LEN; j++){
+					printf("saving queue entry %d \n", j);
+
+					osMessageQueueGet(SDQueueHandle, &DATA_RECEIVE, 0U, 0U);
+
+					res = write_to_file(&DATA_RECEIVE, &buffer_size);
+					if (buffer_size > WRITE_BUFFER_SIZE) {
+						// res = flush_buffer();
+						buffer_size = 0;
+					}
+
+					line_counter++;
+					if (line_counter > SECONDS_PER_FILE * 1000 / 1) {
+						turn_on(&RDY);
+						buffer_size = 0;
+						line_counter = 0;
+						num_dat_file++;
+						res = flush_buffer();
+						close_file();
+						sprintf(FILE_NAME, "DAT%04u/FD%04u.BIN", (unsigned int) num_dir,
+								(unsigned int) num_dat_file);
+						res = open_file(FILE_NAME);
+						turn_off(&RDY);
+					}
+					if (DEBUG_PRINT == 1)
+						printf("tick: %ld \n", tick);
+					if (DEBUG_PRINT == 1)
+						printf("flight phase: %u \n", DATA_RECEIVE.flight_phase);
+					if (DEBUG_PRINT == 1)
+						printf("T_a: %4.2f C \n", a[0]);
+					if (DEBUG_PRINT == 1)
+						printf("ax: %4.2f m/s2 \n", a[1]);
+					if (DEBUG_PRINT == 1)
+						printf("ay: %4.2f m/s2 \n", a[2]);
+					if (DEBUG_PRINT == 1)
+						printf("az: %4.2f m/s2 \n", a[3]);
+					if (DEBUG_PRINT == 1)
+						printf("gx: %4.2f dps \n", a[4]);
+					if (DEBUG_PRINT == 1)
+						printf("gy: %4.2f dps \n", a[5]);
+					if (DEBUG_PRINT == 1)
+						printf("gz: %4.2f dps \n", a[6]);
+					if (DEBUG_PRINT == 1)
+						printf("p1: %4.2f mBar \n", p1);
+					if (DEBUG_PRINT == 1)
+						printf("p2: %4.2f mBar \n", p2);
+					if (DEBUG_PRINT == 1)
+						printf("p_t1: %4.2f C \n", t1);
+					if (DEBUG_PRINT == 1)
+						printf("p_t2: %4.2f C \n", t2);
+					if (DEBUG_PRINT == 1)
+						printf("T_H: %4.2f C \n", T[0]);
+					if (DEBUG_PRINT == 1)
+						printf("T_D: %4.2f C \n", T[1]);
+					if (DEBUG_PRINT == 1)
+						printf("T_C: %4.2f C \n", T[2]);
+				}
 			}
-
-			if (osMutexAcquire(baro1_mutexHandle, BARO_MUTEX_TIMEOUT) == osOK) {
-				DATA.baro1_D1 = baro1_data.baro_D1;
-				DATA.baro1_D2 = baro1_data.baro_D2;
-				osMutexRelease(baro1_mutexHandle);
-			}
-
-			if (osMutexAcquire(baro2_mutexHandle, BARO_MUTEX_TIMEOUT) == osOK) {
-				DATA.baro2_D1 = baro2_data.baro_D1;
-				DATA.baro2_D2 = baro2_data.baro_D2;
-				osMutexRelease(baro2_mutexHandle);
-			}
-
-			if (osMutexAcquire(temp_mutexHandle, TEMP_MUTEX_TIMEOUT) == osOK) {
-				DATA.temp_tc = temp_data.temp_tc;
-				DATA.temp_th = temp_data.temp_th;
-				osMutexRelease(temp_mutexHandle);
-			}
-
-			res = write_to_file(&DATA, &buffer_size);
-			if (buffer_size > WRITE_BUFFER_SIZE) {
-				// res = flush_buffer();
-				buffer_size = 0;
-			}
-
-			line_counter++;
-			if (line_counter > SECONDS_PER_FILE * 1000 / SAVE_INTERVAL) {
-				turn_on(&RDY);
-				buffer_size = 0;
-				line_counter = 0;
-				num_dat_file++;
-				res = flush_buffer();
-				close_file();
-				sprintf(FILE_NAME, "DAT%04u/FD%04u.BIN", (unsigned int) num_dir,
-						(unsigned int) num_dat_file);
-				res = open_file(FILE_NAME);
-				turn_off(&RDY);
-			}
-
-			if (DEBUG_PRINT == 1)
-				printf("tick: %ld \n", tick);
-			if (DEBUG_PRINT == 1)
-				printf("flight phase: %u \n", DATA.flight_phase);
-			if (DEBUG_PRINT == 1)
-				printf("T_a: %4.2f C \n", a[0]);
-			if (DEBUG_PRINT == 1)
-				printf("ax: %4.2f m/s2 \n", a[1]);
-			if (DEBUG_PRINT == 1)
-				printf("ay: %4.2f m/s2 \n", a[2]);
-			if (DEBUG_PRINT == 1)
-				printf("az: %4.2f m/s2 \n", a[3]);
-			if (DEBUG_PRINT == 1)
-				printf("gx: %4.2f dps \n", a[4]);
-			if (DEBUG_PRINT == 1)
-				printf("gy: %4.2f dps \n", a[5]);
-			if (DEBUG_PRINT == 1)
-				printf("gz: %4.2f dps \n", a[6]);
-			if (DEBUG_PRINT == 1)
-				printf("p1: %4.2f mBar \n", p1);
-			if (DEBUG_PRINT == 1)
-				printf("p2: %4.2f mBar \n", p2);
-			if (DEBUG_PRINT == 1)
-				printf("p_t1: %4.2f C \n", t1);
-			if (DEBUG_PRINT == 1)
-				printf("p_t2: %4.2f C \n", t2);
-			if (DEBUG_PRINT == 1)
-				printf("T_H: %4.2f C \n", T[0]);
-			if (DEBUG_PRINT == 1)
-				printf("T_D: %4.2f C \n", T[1]);
-			if (DEBUG_PRINT == 1)
-				printf("T_C: %4.2f C \n", T[2]);
 		} else {
 			close_file();
 			unmount_sd_card();
@@ -716,6 +723,63 @@ void StartSDTask(void *argument)
 		osDelay(SAVE_INTERVAL);
 	}
   /* USER CODE END StartSDTask */
+}
+
+/* USER CODE BEGIN Header_StartGatherTask */
+/**
+* @brief Function implementing the gatherTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartGatherTask */
+void StartGatherTask(void *argument)
+{
+  /* USER CODE BEGIN StartGatherTask */
+  /* Infinite loop */
+  uint32_t tick_count = 0;
+  osStatus_t ret = osOK;
+  for(;;)
+  {
+	tick_count = osKernelGetTickCount();
+	DATA.tick = tick_count;
+
+	if (osMutexAcquire(accel_mutexHandle, ACCEL_MUTEX_TIMEOUT)
+			== osOK) {
+		DATA.accel_t = accel_data.accel_t;
+		DATA.accel_x = accel_data.accel_x;
+		DATA.accel_y = accel_data.accel_y;
+		DATA.accel_z = accel_data.accel_z;
+		DATA.gyro_x = accel_data.gyro_x;
+		DATA.gyro_y = accel_data.gyro_y;
+		DATA.gyro_z = accel_data.gyro_z;
+		osMutexRelease(accel_mutexHandle);
+	}
+
+	if (osMutexAcquire(baro1_mutexHandle, BARO_MUTEX_TIMEOUT) == osOK) {
+		DATA.baro1_D1 = baro1_data.baro_D1;
+		DATA.baro1_D2 = baro1_data.baro_D2;
+		osMutexRelease(baro1_mutexHandle);
+	}
+
+	if (osMutexAcquire(baro2_mutexHandle, BARO_MUTEX_TIMEOUT) == osOK) {
+		DATA.baro2_D1 = baro2_data.baro_D1;
+		DATA.baro2_D2 = baro2_data.baro_D2;
+		osMutexRelease(baro2_mutexHandle);
+	}
+
+	if (osMutexAcquire(temp_mutexHandle, TEMP_MUTEX_TIMEOUT) == osOK) {
+		DATA.temp_tc = temp_data.temp_tc;
+		DATA.temp_th = temp_data.temp_th;
+		osMutexRelease(temp_mutexHandle);
+	}
+
+	ret = osMessageQueuePut(SDQueueHandle, &DATA, 0U, 0U);
+	if (DEBUG_PRINT == 1)
+		printf("queue size: %u, status %d\n", (unsigned int)osMessageQueueGetCount(SDQueueHandle), ret);
+
+    osDelayUntil(tick_count + 1);
+  }
+  /* USER CODE END StartGatherTask */
 }
 
 /* Private application code --------------------------------------------------*/

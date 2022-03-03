@@ -12,6 +12,7 @@
 
 #define WRITE_BUFFER_SIZE 511
 #define SECONDS_PER_FILE 10
+#define SD_BUFFER_LEN 1.5*SAVE_INTERVAL
 
 extern FATFS Fat_Fs;
 extern FIL Data_File;
