@@ -13,5 +13,6 @@ Below is a diagram explaining the software architecture.
 </p>
   
 Repo structure:  
+`Hardware` contains all step files and technical drawings to manufacture and assemble the structural components as well as the EAGLE files of the electronics hardware  
 `Core/Inc` contains headers of project specific code  
 `Core/Src` contains source of project specific code
