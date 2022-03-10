@@ -1,0 +1,7 @@
+TODO for next hardware iteration:
+- static ports further away from screw-mount but also not too close to the tip
+- consider changing the type of pressure sensor (smaller range, better resolution)
+- improve the connection of pressure sensor to the metal parts
+- try to fit a USB-C onto the PCB connector, because cool.
+- implement a flash storage chip, to increase sample rate
+- implement inter-rocket-wifi/bluetooth to connect to avionics

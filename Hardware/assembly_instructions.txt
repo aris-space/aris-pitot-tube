@@ -1,0 +1,9 @@
+Assembly instructions:
+- test if the thermocouple cable fits through the smaller diameter of the guiding tube (we left it out and filled the hole with play-doh)
+- glue the tubes into the bottom mount, pay attention that it is straight!
+- guide the thermocouple cable through the bottom mount and tubes
+- glue the K-Type thermocouple into the tip
+- glue the tip on top of the tubes
+- mount the barometer-sensor PCB (clamp it down with the holder-part) to the bottom mount and seal everythign with play-doh (pay attention not to put play-doh on the sensor membranes)
+- screw the control PCB on to the rack and mount it to the bottom part
+- tape the battery around the control PCB
