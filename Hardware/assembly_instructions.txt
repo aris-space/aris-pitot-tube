@@ -6,5 +6,6 @@ Assembly instructions:
 - glue the K-Type thermocouple into the tip
 - glue the tip on top of the tubes
 - mount the barometer-sensor PCB (clamp it down with the holder-part) to the bottom mount and seal everythign with play-doh (pay attention not to put play-doh on the sensor membranes)
+- remove (with a saw) the bottom tab of the rack, it is not needed and in the way of the switch. This was only used in a previous version, you could also adapt the CAD model before ordering
 - screw the control PCB on to the rack and mount it to the bottom part
 - tape the battery around the control PCB
