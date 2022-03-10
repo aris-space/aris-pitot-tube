@@ -1,6 +1,7 @@
 Assembly instructions:
 - test if the thermocouple cable fits through the smaller diameter of the guiding tube (we left it out and filled the hole with play-doh)
 - glue the tubes into the bottom mount, pay attention that it is straight!
+- put the so far assembled part on the lathe and turn down the bottom mount until the transition to the tube is smooth
 - guide the thermocouple cable through the bottom mount and tubes
 - glue the K-Type thermocouple into the tip
 - glue the tip on top of the tubes
