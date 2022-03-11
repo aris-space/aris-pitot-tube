@@ -1,8 +1,8 @@
 TODO for next hardware iteration (order: relevance):
-- static ports further away from screw-mount but also not too close to the tip
-- change the DEBUG connector to something better (e.g. Tag-Connect)
-- try to fit a USB-C onto the PCB connector, because cool.
-- implement a flash storage chip, to increase sample rate
-- consider changing the type of pressure sensor (smaller range, better resolution)
-- improve the connection of pressure sensor to the metal parts
-- implement inter-rocket-wifi/bluetooth to connect to avionics
+- [Structure] static ports further away from screw-mount but also not too close to the tip
+- [Electronics] change the DEBUG connector to something better (e.g. Tag-Connect)
+- [Electronics] try to fit a USB-C onto the PCB connector, because cool.
+- [Electronics] implement a flash storage chip, to increase sample rate
+- [Electronics] consider changing the type of pressure sensor (smaller range, better resolution)
+- [Structure] improve the connection of pressure sensor to the metal parts
+- [Electronics] implement inter-rocket-wifi/bluetooth to connect to avionics
