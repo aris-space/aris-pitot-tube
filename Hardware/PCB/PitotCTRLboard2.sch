@@ -323,7 +323,7 @@
 </symbol>
 </symbols>
 <devicesets>
-<deviceset name="SMD2" urn="urn:adsk.eagle:component:30857/1" prefix="PAD" uservalue="yes" library_version="1">
+<deviceset name="SMD2" urn="urn:adsk.eagle:component:30857/2" prefix="PAD" uservalue="yes" library_version="2">
 <description>&lt;b&gt;SMD PAD&lt;/b&gt;</description>
 <gates>
 <gate name="1" symbol="PAD" x="0" y="0"/>
@@ -337,12 +337,14 @@
 <package3dinstance package3d_urn="urn:adsk.eagle:package:30839/1"/>
 </package3dinstances>
 <technologies>
-<technology name=""/>
+<technology name="">
+<attribute name="POPULARITY" value="15" constant="no"/>
+</technology>
 </technologies>
 </device>
 </devices>
 </deviceset>
-<deviceset name="1,6/0,9" urn="urn:adsk.eagle:component:30858/1" prefix="PAD" uservalue="yes" library_version="1">
+<deviceset name="1,6/0,9" urn="urn:adsk.eagle:component:30858/2" prefix="PAD" uservalue="yes" library_version="2">
 <description>&lt;b&gt;THROUGH-HOLE PAD&lt;/b&gt;</description>
 <gates>
 <gate name="1" symbol="PAD" x="0" y="0"/>
@@ -356,7 +358,9 @@
 <package3dinstance package3d_urn="urn:adsk.eagle:package:30840/1"/>
 </package3dinstances>
 <technologies>
-<technology name=""/>
+<technology name="">
+<attribute name="POPULARITY" value="7" constant="no"/>
+</technology>
 </technologies>
 </device>
 </devices>
@@ -11349,10 +11353,8 @@ Source: &lt;a href="http://docs-emea.rs-online.com/webdocs/104c/0900766b8104c76b
 <part name="J1" library="2201778-1" library_urn="urn:adsk.eagle:library:15775773" deviceset="2201778-1" device="" package3d_urn="urn:adsk.eagle:package:15775776/2"/>
 <part name="3V3" library="wirepad" library_urn="urn:adsk.eagle:library:412" deviceset="SMD2" device="" package3d_urn="urn:adsk.eagle:package:30839/1"/>
 <part name="GND" library="wirepad" library_urn="urn:adsk.eagle:library:412" deviceset="SMD2" device="" package3d_urn="urn:adsk.eagle:package:30839/1"/>
-<part name="SDA1" library="wirepad" library_urn="urn:adsk.eagle:library:412" deviceset="1,6/0,9" device="" package3d_urn="urn:adsk.eagle:package:30840/1"/>
-<part name="SCL1" library="wirepad" library_urn="urn:adsk.eagle:library:412" deviceset="1,6/0,9" device="" package3d_urn="urn:adsk.eagle:package:30840/1"/>
-<part name="SDA2" library="wirepad" library_urn="urn:adsk.eagle:library:412" deviceset="1,6/0,9" device="" package3d_urn="urn:adsk.eagle:package:30840/1"/>
-<part name="SCL2" library="wirepad" library_urn="urn:adsk.eagle:library:412" deviceset="1,6/0,9" device="" package3d_urn="urn:adsk.eagle:package:30840/1"/>
+<part name="CS1" library="wirepad" library_urn="urn:adsk.eagle:library:412" deviceset="SMD2" device="" package3d_urn="urn:adsk.eagle:package:30839/1"/>
+<part name="CS2" library="wirepad" library_urn="urn:adsk.eagle:library:412" deviceset="SMD2" device="" package3d_urn="urn:adsk.eagle:package:30839/1"/>
 <part name="T+" library="wirepad" library_urn="urn:adsk.eagle:library:412" deviceset="1,6/0,9" device="" package3d_urn="urn:adsk.eagle:package:30840/1"/>
 <part name="T-" library="wirepad" library_urn="urn:adsk.eagle:library:412" deviceset="1,6/0,9" device="" package3d_urn="urn:adsk.eagle:package:30840/1"/>
 <part name="TEMP" library="MCP9600-E_MX" library_urn="urn:adsk.eagle:library:17689385" deviceset="MCP9600-E_MX" device="" package3d_urn="urn:adsk.eagle:package:17689388/2"/>
@@ -11382,11 +11384,6 @@ Source: &lt;a href="http://docs-emea.rs-online.com/webdocs/104c/0900766b8104c76b
 <part name="R4" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/2" value="47k"/>
 <part name="R5" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/2" value="47k"/>
 <part name="+3V5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
-<part name="R6" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/2" value="10k"/>
-<part name="R7" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/2" value="10k"/>
-<part name="R8" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/2" value="10k"/>
-<part name="R9" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/2" value="10k"/>
-<part name="+3V7" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="R43" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/2" value="1k"/>
 <part name="STAT" library="led" library_urn="urn:adsk.eagle:library:259" deviceset="LED" device="CHIPLED_0805" package3d_urn="urn:adsk.eagle:package:15821/2"/>
 <part name="RDY" library="led" library_urn="urn:adsk.eagle:library:259" deviceset="LED" device="CHIPLED_0805" package3d_urn="urn:adsk.eagle:package:15821/2"/>
@@ -11410,6 +11407,7 @@ Source: &lt;a href="http://docs-emea.rs-online.com/webdocs/104c/0900766b8104c76b
 <part name="C2" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0603K" package3d_urn="urn:adsk.eagle:package:23680/2" value="0.1uF"/>
 <part name="C3" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0603K" package3d_urn="urn:adsk.eagle:package:23680/2" value="0.1uF"/>
 <part name="PWR" library="EG1270" library_urn="urn:adsk.eagle:library:22581338" deviceset="EG1270" device="" package3d_urn="urn:adsk.eagle:package:22581341/2"/>
+<part name="GND13" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="+3V10" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="C4" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0603K" package3d_urn="urn:adsk.eagle:package:23680/2" value="2.2uF"/>
 <part name="C5" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0603K" package3d_urn="urn:adsk.eagle:package:23680/2" value="0.47uF"/>
@@ -11463,6 +11461,13 @@ Source: &lt;a href="http://docs-emea.rs-online.com/webdocs/104c/0900766b8104c76b
 <part name="GND34" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="D5" library="BAV16W-7-F" library_urn="urn:adsk.eagle:library:17894726" deviceset="BAV16W-7-F" device="" package3d_urn="urn:adsk.eagle:package:17894729/2"/>
 <part name="P+5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
+<part name="CLK" library="wirepad" library_urn="urn:adsk.eagle:library:412" deviceset="SMD2" device="" package3d_urn="urn:adsk.eagle:package:30839/1"/>
+<part name="SDI" library="wirepad" library_urn="urn:adsk.eagle:library:412" deviceset="SMD2" device="" package3d_urn="urn:adsk.eagle:package:30839/1"/>
+<part name="SDO" library="wirepad" library_urn="urn:adsk.eagle:library:412" deviceset="SMD2" device="" package3d_urn="urn:adsk.eagle:package:30839/1"/>
+<part name="R6" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/2" value="10k"/>
+<part name="R7" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/2" value="10k"/>
+<part name="+3V7" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
+<part name="P+6" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -11498,21 +11503,13 @@ Source: &lt;a href="http://docs-emea.rs-online.com/webdocs/104c/0900766b8104c76b
 <attribute name="NAME" x="79.883" y="3.2258" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="79.883" y="8.382" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="SDA1" gate="1" x="78.74" y="-63.5" smashed="yes" rot="R180">
+<instance part="CS1" gate="1" x="78.74" y="-63.5" smashed="yes" rot="R180">
 <attribute name="NAME" x="79.883" y="-65.3542" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="79.883" y="-60.198" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="SCL1" gate="1" x="78.74" y="-68.58" smashed="yes" rot="R180">
+<instance part="CS2" gate="1" x="78.74" y="-68.58" smashed="yes" rot="R180">
 <attribute name="NAME" x="79.883" y="-70.4342" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="79.883" y="-65.278" size="1.778" layer="96" rot="R180"/>
-</instance>
-<instance part="SDA2" gate="1" x="78.74" y="-58.42" smashed="yes" rot="R180">
-<attribute name="NAME" x="79.883" y="-60.2742" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="79.883" y="-55.118" size="1.778" layer="96" rot="R180"/>
-</instance>
-<instance part="SCL2" gate="1" x="78.74" y="-53.34" smashed="yes" rot="R180">
-<attribute name="NAME" x="79.883" y="-55.1942" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="79.883" y="-50.038" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="T+" gate="1" x="78.74" y="-22.86" smashed="yes" rot="R180">
 <attribute name="NAME" x="79.883" y="-24.7142" size="1.778" layer="95" rot="R180"/>
@@ -11612,25 +11609,6 @@ Source: &lt;a href="http://docs-emea.rs-online.com/webdocs/104c/0900766b8104c76b
 <instance part="+3V5" gate="G$1" x="10.16" y="86.36" smashed="yes">
 <attribute name="VALUE" x="12.7" y="86.36" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="R6" gate="G$1" x="-63.5" y="-43.18" smashed="yes" rot="R90">
-<attribute name="NAME" x="-64.9986" y="-46.99" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="-65.278" y="-41.91" size="1.778" layer="96" rot="R90"/>
-</instance>
-<instance part="R7" gate="G$1" x="-58.42" y="-43.18" smashed="yes" rot="R90">
-<attribute name="NAME" x="-59.9186" y="-46.99" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="-60.198" y="-41.91" size="1.778" layer="96" rot="R90"/>
-</instance>
-<instance part="R8" gate="G$1" x="-53.34" y="-43.18" smashed="yes" rot="R90">
-<attribute name="NAME" x="-54.8386" y="-46.99" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="-55.118" y="-41.91" size="1.778" layer="96" rot="R90"/>
-</instance>
-<instance part="R9" gate="G$1" x="-48.26" y="-43.18" smashed="yes" rot="R90">
-<attribute name="NAME" x="-49.7586" y="-46.99" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="-50.038" y="-41.91" size="1.778" layer="96" rot="R90"/>
-</instance>
-<instance part="+3V7" gate="G$1" x="-48.26" y="-27.94" smashed="yes">
-<attribute name="VALUE" x="-45.72" y="-25.4" size="1.778" layer="96" rot="R180"/>
-</instance>
 <instance part="R43" gate="G$1" x="-149.86" y="-66.04" smashed="yes" rot="R270">
 <attribute name="NAME" x="-148.3614" y="-62.23" size="1.778" layer="95" rot="R270"/>
 <attribute name="VALUE" x="-148.082" y="-67.31" size="1.778" layer="96" rot="R270"/>
@@ -11714,6 +11692,9 @@ Source: &lt;a href="http://docs-emea.rs-online.com/webdocs/104c/0900766b8104c76b
 <instance part="PWR" gate="G$1" x="-93.98" y="210.82" smashed="yes" rot="MR90">
 <attribute name="NAME" x="-86.36" y="229.87" size="1.778" layer="95" rot="MR90" align="center-left"/>
 <attribute name="VALUE" x="-88.9" y="229.87" size="1.778" layer="96" rot="MR90" align="center-left"/>
+</instance>
+<instance part="GND13" gate="1" x="0" y="-106.68" smashed="yes">
+<attribute name="VALUE" x="-2.54" y="-109.22" size="1.778" layer="96"/>
 </instance>
 <instance part="+3V10" gate="G$1" x="63.5" y="-76.2" smashed="yes">
 <attribute name="VALUE" x="66.04" y="-76.2" size="1.778" layer="96" rot="R90"/>
@@ -11896,6 +11877,32 @@ Source: &lt;a href="http://docs-emea.rs-online.com/webdocs/104c/0900766b8104c76b
 <instance part="P+5" gate="1" x="-91.44" y="198.12" smashed="yes">
 <attribute name="VALUE" x="-93.98" y="193.04" size="1.778" layer="96" rot="R90"/>
 </instance>
+<instance part="CLK" gate="1" x="-50.8" y="-35.56" smashed="yes" rot="R180">
+<attribute name="NAME" x="-49.657" y="-37.4142" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="-49.657" y="-32.258" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="SDI" gate="1" x="-2.54" y="0" smashed="yes" rot="R180">
+<attribute name="NAME" x="-1.397" y="-1.8542" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="-1.397" y="3.302" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="SDO" gate="1" x="-2.54" y="5.08" smashed="yes" rot="R180">
+<attribute name="NAME" x="-1.397" y="3.2258" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="-1.397" y="8.382" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="R6" gate="G$1" x="-17.78" y="-43.18" smashed="yes" rot="R270">
+<attribute name="NAME" x="-16.2814" y="-39.37" size="1.778" layer="95" rot="R270"/>
+<attribute name="VALUE" x="-16.002" y="-44.45" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="R7" gate="G$1" x="-25.4" y="-43.18" smashed="yes" rot="R270">
+<attribute name="NAME" x="-23.9014" y="-39.37" size="1.778" layer="95" rot="R270"/>
+<attribute name="VALUE" x="-23.622" y="-44.45" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="+3V7" gate="G$1" x="-25.4" y="-27.94" smashed="yes">
+<attribute name="VALUE" x="-22.86" y="-25.4" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="P+6" gate="1" x="-76.2" y="264.16" smashed="yes">
+<attribute name="VALUE" x="-78.74" y="259.08" size="1.778" layer="96" rot="R90"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -11932,9 +11939,6 @@ Source: &lt;a href="http://docs-emea.rs-online.com/webdocs/104c/0900766b8104c76b
 <wire x1="30.48" y1="-45.72" x2="30.48" y2="-48.26" width="0.1524" layer="91"/>
 <junction x="30.48" y="-45.72"/>
 <pinref part="GND3" gate="1" pin="GND"/>
-<pinref part="TEMP" gate="G$1" pin="ADDR"/>
-<wire x1="27.94" y1="-43.18" x2="27.94" y2="-45.72" width="0.1524" layer="91"/>
-<wire x1="27.94" y1="-45.72" x2="30.48" y2="-45.72" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="TEMP" gate="G$1" pin="GND_7"/>
@@ -12074,6 +12078,12 @@ Source: &lt;a href="http://docs-emea.rs-online.com/webdocs/104c/0900766b8104c76b
 <pinref part="GND9" gate="1" pin="GND"/>
 <pinref part="C1" gate="G$1" pin="2"/>
 <wire x1="-83.82" y1="160.02" x2="-83.82" y2="167.64" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="GND13" gate="1" pin="GND"/>
+<wire x1="0" y1="-104.14" x2="0" y2="-96.52" width="0.1524" layer="91"/>
+<pinref part="ACCEL" gate="G$1" pin="RESV_1"/>
+<wire x1="0" y1="-96.52" x2="2.54" y2="-96.52" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="C5" gate="G$1" pin="2"/>
@@ -12251,24 +12261,6 @@ Source: &lt;a href="http://docs-emea.rs-online.com/webdocs/104c/0900766b8104c76b
 <pinref part="+3V5" gate="G$1" pin="+3V3"/>
 </segment>
 <segment>
-<pinref part="R6" gate="G$1" pin="2"/>
-<wire x1="-63.5" y1="-38.1" x2="-63.5" y2="-35.56" width="0.1524" layer="91"/>
-<pinref part="R9" gate="G$1" pin="2"/>
-<wire x1="-63.5" y1="-35.56" x2="-58.42" y2="-35.56" width="0.1524" layer="91"/>
-<wire x1="-58.42" y1="-35.56" x2="-53.34" y2="-35.56" width="0.1524" layer="91"/>
-<wire x1="-53.34" y1="-35.56" x2="-48.26" y2="-35.56" width="0.1524" layer="91"/>
-<wire x1="-48.26" y1="-35.56" x2="-48.26" y2="-38.1" width="0.1524" layer="91"/>
-<pinref part="R8" gate="G$1" pin="2"/>
-<wire x1="-53.34" y1="-38.1" x2="-53.34" y2="-35.56" width="0.1524" layer="91"/>
-<junction x="-53.34" y="-35.56"/>
-<pinref part="R7" gate="G$1" pin="2"/>
-<wire x1="-58.42" y1="-38.1" x2="-58.42" y2="-35.56" width="0.1524" layer="91"/>
-<junction x="-58.42" y="-35.56"/>
-<wire x1="-48.26" y1="-35.56" x2="-48.26" y2="-30.48" width="0.1524" layer="91"/>
-<junction x="-48.26" y="-35.56"/>
-<pinref part="+3V7" gate="G$1" pin="+3V3"/>
-</segment>
-<segment>
 <pinref part="+3V25" gate="G$1" pin="+3V3"/>
 <pinref part="R36" gate="G$1" pin="2"/>
 <wire x1="-142.24" y1="99.06" x2="-142.24" y2="93.98" width="0.1524" layer="91"/>
@@ -12322,6 +12314,16 @@ Source: &lt;a href="http://docs-emea.rs-online.com/webdocs/104c/0900766b8104c76b
 <pinref part="C10" gate="G$1" pin="1"/>
 <wire x1="27.94" y1="109.22" x2="27.94" y2="111.76" width="0.1524" layer="91"/>
 <pinref part="+3V14" gate="G$1" pin="+3V3"/>
+</segment>
+<segment>
+<pinref part="R6" gate="G$1" pin="1"/>
+<wire x1="-17.78" y1="-38.1" x2="-17.78" y2="-33.02" width="0.1524" layer="91"/>
+<wire x1="-17.78" y1="-33.02" x2="-25.4" y2="-33.02" width="0.1524" layer="91"/>
+<pinref part="+3V7" gate="G$1" pin="+3V3"/>
+<wire x1="-25.4" y1="-33.02" x2="-25.4" y2="-30.48" width="0.1524" layer="91"/>
+<pinref part="R7" gate="G$1" pin="1"/>
+<wire x1="-25.4" y1="-33.02" x2="-25.4" y2="-38.1" width="0.1524" layer="91"/>
+<junction x="-25.4" y="-33.02"/>
 </segment>
 </net>
 <net name="N$13" class="0">
@@ -12387,17 +12389,14 @@ Source: &lt;a href="http://docs-emea.rs-online.com/webdocs/104c/0900766b8104c76b
 <segment>
 <pinref part="TEMP" gate="G$1" pin="SCL"/>
 <wire x1="35.56" y1="-43.18" x2="35.56" y2="-53.34" width="0.1524" layer="91"/>
-<wire x1="35.56" y1="-53.34" x2="-63.5" y2="-53.34" width="0.1524" layer="91"/>
-<wire x1="-63.5" y1="-53.34" x2="-86.36" y2="-53.34" width="0.1524" layer="91"/>
+<wire x1="35.56" y1="-53.34" x2="-25.4" y2="-53.34" width="0.1524" layer="91"/>
+<wire x1="-25.4" y1="-53.34" x2="-86.36" y2="-53.34" width="0.1524" layer="91"/>
 <wire x1="-86.36" y1="-53.34" x2="-86.36" y2="7.62" width="0.1524" layer="91"/>
 <pinref part="U1" gate="G$1" pin="PB10"/>
 <wire x1="-86.36" y1="7.62" x2="-81.28" y2="7.62" width="0.1524" layer="91"/>
-<pinref part="SCL2" gate="1" pin="P"/>
-<wire x1="76.2" y1="-53.34" x2="35.56" y2="-53.34" width="0.1524" layer="91"/>
-<junction x="35.56" y="-53.34"/>
-<pinref part="R6" gate="G$1" pin="1"/>
-<wire x1="-63.5" y1="-48.26" x2="-63.5" y2="-53.34" width="0.1524" layer="91"/>
-<junction x="-63.5" y="-53.34"/>
+<pinref part="R7" gate="G$1" pin="2"/>
+<wire x1="-25.4" y1="-53.34" x2="-25.4" y2="-48.26" width="0.1524" layer="91"/>
+<junction x="-25.4" y="-53.34"/>
 </segment>
 </net>
 <net name="N$11" class="0">
@@ -12406,15 +12405,12 @@ Source: &lt;a href="http://docs-emea.rs-online.com/webdocs/104c/0900766b8104c76b
 <wire x1="-81.28" y1="5.08" x2="-88.9" y2="5.08" width="0.1524" layer="91"/>
 <wire x1="-88.9" y1="5.08" x2="-88.9" y2="-58.42" width="0.1524" layer="91"/>
 <pinref part="TEMP" gate="G$1" pin="SDA"/>
-<wire x1="-88.9" y1="-58.42" x2="-58.42" y2="-58.42" width="0.1524" layer="91"/>
-<wire x1="-58.42" y1="-58.42" x2="38.1" y2="-58.42" width="0.1524" layer="91"/>
+<wire x1="-88.9" y1="-58.42" x2="-17.78" y2="-58.42" width="0.1524" layer="91"/>
+<wire x1="-17.78" y1="-58.42" x2="38.1" y2="-58.42" width="0.1524" layer="91"/>
 <wire x1="38.1" y1="-58.42" x2="38.1" y2="-43.18" width="0.1524" layer="91"/>
-<pinref part="SDA2" gate="1" pin="P"/>
-<wire x1="38.1" y1="-58.42" x2="76.2" y2="-58.42" width="0.1524" layer="91"/>
-<junction x="38.1" y="-58.42"/>
-<pinref part="R7" gate="G$1" pin="1"/>
-<wire x1="-58.42" y1="-48.26" x2="-58.42" y2="-58.42" width="0.1524" layer="91"/>
-<junction x="-58.42" y="-58.42"/>
+<pinref part="R6" gate="G$1" pin="2"/>
+<wire x1="-17.78" y1="-48.26" x2="-17.78" y2="-58.42" width="0.1524" layer="91"/>
+<junction x="-17.78" y="-58.42"/>
 </segment>
 </net>
 <net name="N$3" class="0">
@@ -12422,25 +12418,17 @@ Source: &lt;a href="http://docs-emea.rs-online.com/webdocs/104c/0900766b8104c76b
 <pinref part="U1" gate="G$1" pin="PB7"/>
 <wire x1="-81.28" y1="15.24" x2="-91.44" y2="15.24" width="0.1524" layer="91"/>
 <wire x1="-91.44" y1="15.24" x2="-91.44" y2="-63.5" width="0.1524" layer="91"/>
-<pinref part="SDA1" gate="1" pin="P"/>
-<wire x1="-91.44" y1="-63.5" x2="-53.34" y2="-63.5" width="0.1524" layer="91"/>
-<pinref part="R8" gate="G$1" pin="1"/>
-<wire x1="-53.34" y1="-63.5" x2="76.2" y2="-63.5" width="0.1524" layer="91"/>
-<wire x1="-53.34" y1="-48.26" x2="-53.34" y2="-63.5" width="0.1524" layer="91"/>
-<junction x="-53.34" y="-63.5"/>
+<pinref part="CS1" gate="1" pin="P"/>
+<wire x1="-91.44" y1="-63.5" x2="76.2" y2="-63.5" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$4" class="0">
 <segment>
-<pinref part="SCL1" gate="1" pin="P"/>
-<wire x1="76.2" y1="-68.58" x2="-48.26" y2="-68.58" width="0.1524" layer="91"/>
-<wire x1="-48.26" y1="-68.58" x2="-93.98" y2="-68.58" width="0.1524" layer="91"/>
+<pinref part="CS2" gate="1" pin="P"/>
+<wire x1="76.2" y1="-68.58" x2="-93.98" y2="-68.58" width="0.1524" layer="91"/>
 <wire x1="-93.98" y1="-68.58" x2="-93.98" y2="17.78" width="0.1524" layer="91"/>
 <pinref part="U1" gate="G$1" pin="PB6"/>
 <wire x1="-93.98" y1="17.78" x2="-81.28" y2="17.78" width="0.1524" layer="91"/>
-<pinref part="R9" gate="G$1" pin="1"/>
-<wire x1="-48.26" y1="-48.26" x2="-48.26" y2="-68.58" width="0.1524" layer="91"/>
-<junction x="-48.26" y="-68.58"/>
 </segment>
 </net>
 <net name="N$12" class="0">
@@ -12677,6 +12665,17 @@ Source: &lt;a href="http://docs-emea.rs-online.com/webdocs/104c/0900766b8104c76b
 <wire x1="-91.44" y1="193.04" x2="-91.44" y2="195.58" width="0.1524" layer="91"/>
 <pinref part="P+5" gate="1" pin="+5V"/>
 </segment>
+<segment>
+<pinref part="U$2" gate="A" pin="STAT"/>
+<wire x1="-73.66" y1="226.06" x2="-76.2" y2="226.06" width="0.1524" layer="91"/>
+<wire x1="-76.2" y1="226.06" x2="-76.2" y2="259.08" width="0.1524" layer="91"/>
+<wire x1="-76.2" y1="259.08" x2="-66.04" y2="259.08" width="0.1524" layer="91"/>
+<wire x1="-66.04" y1="259.08" x2="-66.04" y2="256.54" width="0.1524" layer="91"/>
+<pinref part="CHRG" gate="G$1" pin="A"/>
+<pinref part="P+6" gate="1" pin="+5V"/>
+<wire x1="-76.2" y1="261.62" x2="-76.2" y2="259.08" width="0.1524" layer="91"/>
+<junction x="-76.2" y="259.08"/>
+</segment>
 </net>
 <net name="V+" class="0">
 <segment>
@@ -12781,16 +12780,6 @@ Source: &lt;a href="http://docs-emea.rs-online.com/webdocs/104c/0900766b8104c76b
 <junction x="-2.54" y="25.4"/>
 </segment>
 </net>
-<net name="N$40" class="0">
-<segment>
-<pinref part="U$2" gate="A" pin="STAT"/>
-<wire x1="-73.66" y1="226.06" x2="-76.2" y2="226.06" width="0.1524" layer="91"/>
-<wire x1="-76.2" y1="226.06" x2="-76.2" y2="259.08" width="0.1524" layer="91"/>
-<wire x1="-76.2" y1="259.08" x2="-66.04" y2="259.08" width="0.1524" layer="91"/>
-<wire x1="-66.04" y1="259.08" x2="-66.04" y2="256.54" width="0.1524" layer="91"/>
-<pinref part="CHRG" gate="G$1" pin="A"/>
-</segment>
-</net>
 <net name="N$41" class="0">
 <segment>
 <pinref part="CHRG" gate="G$1" pin="C"/>
@@ -12799,11 +12788,41 @@ Source: &lt;a href="http://docs-emea.rs-online.com/webdocs/104c/0900766b8104c76b
 </net>
 <net name="N$42" class="0">
 <segment>
+<pinref part="U1" gate="G$1" pin="PC2/SPI2_MISO"/>
+<wire x1="-20.32" y1="71.12" x2="-10.16" y2="71.12" width="0.1524" layer="91"/>
+<wire x1="-10.16" y1="71.12" x2="-10.16" y2="5.08" width="0.1524" layer="91"/>
+<wire x1="-10.16" y1="5.08" x2="-5.08" y2="5.08" width="0.1524" layer="91"/>
+<pinref part="SDO" gate="1" pin="P"/>
+</segment>
+</net>
+<net name="N$43" class="0">
+<segment>
+<pinref part="U1" gate="G$1" pin="PC3/SPI2_MOSI"/>
+<wire x1="-20.32" y1="68.58" x2="-15.24" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="-15.24" y1="68.58" x2="-15.24" y2="0" width="0.1524" layer="91"/>
+<wire x1="-15.24" y1="0" x2="-5.08" y2="0" width="0.1524" layer="91"/>
+<pinref part="SDI" gate="1" pin="P"/>
+</segment>
+</net>
+<net name="N$44" class="0">
+<segment>
+<pinref part="U1" gate="G$1" pin="PB13"/>
+<wire x1="-81.28" y1="0" x2="-83.82" y2="0" width="0.1524" layer="91"/>
+<wire x1="-83.82" y1="0" x2="-83.82" y2="-35.56" width="0.1524" layer="91"/>
+<wire x1="-83.82" y1="-35.56" x2="-53.34" y2="-35.56" width="0.1524" layer="91"/>
+<pinref part="CLK" gate="1" pin="P"/>
+</segment>
+</net>
+<net name="INT" class="0">
+<segment>
 <pinref part="ACCEL" gate="G$1" pin="INT"/>
-<wire x1="2.54" y1="-93.98" x2="-114.3" y2="-93.98" width="0.1524" layer="91"/>
-<wire x1="-114.3" y1="-93.98" x2="-114.3" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="2.54" y1="-93.98" x2="0" y2="-93.98" width="0.1524" layer="91"/>
+<label x="-2.54" y="-93.98" size="1.778" layer="95"/>
+</segment>
+<segment>
 <pinref part="U1" gate="G$1" pin="PA0/WKUP"/>
-<wire x1="-114.3" y1="76.2" x2="-81.28" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="-81.28" y1="76.2" x2="-86.36" y2="76.2" width="0.1524" layer="91"/>
+<label x="-86.36" y="76.2" size="1.778" layer="95"/>
 </segment>
 </net>
 </nets>
