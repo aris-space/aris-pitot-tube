@@ -162,7 +162,7 @@
 <layer number="255" name="routoute" color="7" fill="1" visible="yes" active="yes"/>
 </layers>
 <board>
-<fusionsync huburn="a.cGVyc29uYWw6dWUyYmY0NzQ1" projecturn="a.cGVyc29uYWw6dWUyYmY0NzQ1IzIwMTkxMDIyMjI5ODc5MDU2" f3durn="urn:adsk.wipprod:dm.lineage:WfaN1g-LTLiILMJPnQK9KA" pcbguid="362a1a71-5e66-47af-8f2e-8751714f2fb8" lastpulledtime="" lastsyncedchangeguid="b264cce3-9598-0f09-fb47-78b5a6d669a2" latestrevisionid="" lastsyncedrevisionid="" lastboardhashguid="" lastpushedtime="" linktopcb3d="false"/>
+<fusionsync huburn="a.cGVyc29uYWw6dWUyYmY0NzQ1" projecturn="a.cGVyc29uYWw6dWUyYmY0NzQ1IzIwMTkxMDIyMjI5ODc5MDU2" f3durn="urn:adsk.wipprod:dm.lineage:WfaN1g-LTLiILMJPnQK9KA" pcbguid="362a1a71-5e66-47af-8f2e-8751714f2fb8" lastpulledtime="" lastsyncedchangeguid="b264cce3-9598-0f09-fb47-78b5a6d669a2" latestrevisionid="" lastsyncedrevisionid="" lastboardhashguid="9b8f1565-14da-33a3-1f42-936fd9f9e50f" lastpushedtime="2022-04-24T13:49:34Z" linktopcb3d="false"/>
 <plain>
 <wire x1="-4.318" y1="-35.687" x2="4.318" y2="-35.687" width="0.1524" layer="20"/>
 <wire x1="8.89" y1="-34.925" x2="8.89" y2="-33.02" width="0.1524" layer="20"/>
@@ -2649,16 +2649,16 @@ design rules under a new name.</description>
 <attribute name="SPICEPREFIX" value="C" x="7.62" y="13.97" size="1.778" layer="28" rot="MR0" display="off"/>
 <attribute name="VALUE" x="4.61" y="17.4" size="1.016" layer="28" rot="MR0"/>
 </element>
-<element name="USB" library="USB4085-GF-A_REVA4" library_urn="urn:adsk.eagle:library:32300779" package="GCT_USB4085-GF-A_REVA4" package3d_urn="urn:adsk.eagle:package:32300783/4" value="USB4085-GF-A_REVA4" x="-3.81" y="21.59" smashed="yes" rot="R270">
-<attribute name="AVAILABILITY" value="In Stock" x="-35.56" y="21.59" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="DESCRIPTION" value=" USB-C (USB TYPE-C) USB 2.0 Receptacle Connector 24 (16+8 Dummy) Position Through Hole, Right Angle, low cost, 3.46mm profile, 16 pin, horizontal, Top mount " x="-35.56" y="21.59" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="MF" value="Global Connector Technology" x="-35.56" y="21.59" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="MP" value="USB4085-GF-A" x="-35.56" y="21.59" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="NAME" x="-4.27968125" y="23.3229" size="1.270190625" layer="25" ratio="13" rot="SR270"/>
-<attribute name="PACKAGE" value="None" x="-35.56" y="21.59" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="PRICE" value="None" x="-35.56" y="21.59" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="PURCHASE-URL" value="https://pricing.snapeda.com/search/part/USB4085-GF-A/?ref=eda" x="-35.56" y="21.59" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="VALUE" x="-10.2839" y="25.761540625" size="1.271959375" layer="27" ratio="13" rot="SR270"/>
+<element name="USB" library="USB4085-GF-A_REVA4" library_urn="urn:adsk.eagle:library:32300779" package="GCT_USB4085-GF-A_REVA4" package3d_urn="urn:adsk.eagle:package:32300783/4" value="USB4085-GF-A_REVA4" x="-4.191" y="21.59" smashed="yes" rot="R270">
+<attribute name="AVAILABILITY" value="In Stock" x="-35.941" y="21.59" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="DESCRIPTION" value=" USB-C (USB TYPE-C) USB 2.0 Receptacle Connector 24 (16+8 Dummy) Position Through Hole, Right Angle, low cost, 3.46mm profile, 16 pin, horizontal, Top mount " x="-35.941" y="21.59" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="MF" value="Global Connector Technology" x="-35.941" y="21.59" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="MP" value="USB4085-GF-A" x="-35.941" y="21.59" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="NAME" x="-4.66068125" y="23.3229" size="1.270190625" layer="25" ratio="13" rot="SR270"/>
+<attribute name="PACKAGE" value="None" x="-35.941" y="21.59" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="PRICE" value="None" x="-35.941" y="21.59" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="PURCHASE-URL" value="https://pricing.snapeda.com/search/part/USB4085-GF-A/?ref=eda" x="-35.941" y="21.59" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="VALUE" x="-10.6649" y="25.761540625" size="1.271959375" layer="27" ratio="13" rot="SR270"/>
 </element>
 </elements>
 <signals>
@@ -2803,10 +2803,8 @@ design rules under a new name.</description>
 <contactref element="USB" pad="P2"/>
 <contactref element="USB" pad="P1"/>
 <contactref element="USB" pad="P3"/>
-<wire x1="-1.135" y1="24.565" x2="0.215" y2="24.565" width="0.1524" layer="1"/>
-<wire x1="-1.135" y1="18.615" x2="0.215" y2="18.615" width="0.1524" layer="1"/>
-<wire x1="-1.135" y1="18.615" x2="-1.135" y2="18.75393125" width="0.1524" layer="1"/>
-<wire x1="-1.135" y1="24.42606875" x2="-1.135" y2="24.565" width="0.1524" layer="1"/>
+<wire x1="-1.516" y1="24.565" x2="-0.166" y2="24.565" width="0.1524" layer="1"/>
+<wire x1="-1.516" y1="18.615" x2="-0.166" y2="18.615" width="0.1524" layer="1"/>
 <wire x1="4.685" y1="19.05" x2="4.685" y2="20.295" width="0.127" layer="16"/>
 <wire x1="4.685" y1="20.295" x2="4.66" y2="20.32" width="0.127" layer="16"/>
 <wire x1="4.66" y1="24.13" x2="3.263" y2="25.527" width="0.127" layer="16"/>
@@ -2816,11 +2814,11 @@ design rules under a new name.</description>
 <wire x1="-5.842" y1="24.243" x2="-2.794" y2="24.243" width="0.1524" layer="16"/>
 <wire x1="-2.794" y1="24.243" x2="-2.092" y2="24.243" width="0.1524" layer="16"/>
 <wire x1="-1.77" y1="24.565" x2="-2.092" y2="24.243" width="0.1524" layer="16"/>
-<wire x1="-1.77" y1="24.565" x2="-1.135" y2="24.565" width="0.1524" layer="16"/>
+<wire x1="-1.77" y1="24.565" x2="-1.516" y2="24.565" width="0.1524" layer="16"/>
 <wire x1="-4.2926" y1="19.812" x2="-5.15365" y2="19.812" width="0.1524" layer="16"/>
 <wire x1="-5.15365" y1="19.812" x2="-5.4864" y2="19.47925" width="0.1524" layer="16"/>
 <wire x1="-5.161" y1="17.265" x2="-5.4864" y2="17.5904" width="0.1524" layer="16"/>
-<wire x1="-5.161" y1="17.265" x2="-4.145" y2="17.265" width="0.1524" layer="16"/>
+<wire x1="-5.161" y1="17.265" x2="-4.526" y2="17.265" width="0.1524" layer="16"/>
 <wire x1="-5.4864" y1="19.47925" x2="-5.4864" y2="17.5904" width="0.1524" layer="16"/>
 <wire x1="2.54" y1="11.938" x2="2.45" y2="12.028" width="0.1524" layer="16"/>
 <wire x1="2.45" y1="12.028" x2="2.45" y2="14.097" width="0.1524" layer="16"/>
@@ -2945,13 +2943,13 @@ design rules under a new name.</description>
 <wire x1="4.912" y1="23.628" x2="4.912" y2="24.136" width="0.127" layer="1"/>
 <wire x1="5.547" y1="24.771" x2="4.912" y2="24.136" width="0.127" layer="1"/>
 <wire x1="6.985" y1="25.273" x2="6.985" y2="26.35065625" width="0.127" layer="1"/>
-<wire x1="-5.461" y1="16.002" x2="-5.842" y2="16.383" width="0.1524" layer="1"/>
+<wire x1="-5.842" y1="16.002" x2="-6.096" y2="16.256" width="0.1524" layer="1"/>
 <wire x1="2.26365" y1="15.2842" x2="1.06635" y2="15.2842" width="0.1524" layer="1"/>
 <wire x1="3.415" y1="16.002" x2="2.98145" y2="16.002" width="0.1524" layer="1"/>
-<wire x1="0.34855" y1="16.002" x2="-5.461" y2="16.002" width="0.1524" layer="1"/>
+<wire x1="0.34855" y1="16.002" x2="-5.842" y2="16.002" width="0.1524" layer="1"/>
 <wire x1="2.98145" y1="16.002" x2="2.26365" y2="15.2842" width="0.1524" layer="1"/>
 <wire x1="1.06635" y1="15.2842" x2="0.34855" y2="16.002" width="0.1524" layer="1"/>
-<via x="-5.842" y="16.383" extent="1-16" drill="0.35"/>
+<via x="-6.096" y="16.256" extent="1-16" drill="0.35"/>
 <wire x1="5.547" y1="24.771" x2="6.50730625" y2="24.771" width="0.1524" layer="1"/>
 <wire x1="6.985" y1="25.24869375" x2="6.985" y2="25.273" width="0.1524" layer="1"/>
 <wire x1="6.50730625" y1="24.771" x2="6.985" y2="25.24869375" width="0.1524" layer="1"/>
@@ -3344,16 +3342,14 @@ design rules under a new name.</description>
 <contactref element="USB" pad="B4"/>
 <contactref element="USB" pad="A9"/>
 <contactref element="USB" pad="B9"/>
-<wire x1="-1.135" y1="19.465" x2="0.215" y2="19.465" width="0.1524" layer="1"/>
-<wire x1="-1.135" y1="23.715" x2="0.215" y2="23.715" width="0.1524" layer="1"/>
-<wire x1="-1.135" y1="23.715" x2="-1.135" y2="23.57606875" width="0.1524" layer="1"/>
-<wire x1="-1.135" y1="19.60393125" x2="-1.135" y2="19.465" width="0.1524" layer="1"/>
-<wire x1="-1.135" y1="23.57606875" x2="-1.6378" y2="23.07326875" width="0.1524" layer="1"/>
-<wire x1="-1.6378" y1="23.07326875" x2="-1.6378" y2="20.10673125" width="0.1524" layer="1"/>
-<wire x1="-1.6378" y1="20.10673125" x2="-1.135" y2="19.60393125" width="0.1524" layer="1"/>
-<wire x1="0.215" y1="19.465" x2="0.63" y2="19.05" width="0.1524" layer="16"/>
-<wire x1="0.63" y1="19.05" x2="2.935" y2="19.05" width="0.1524" layer="16"/>
-<wire x1="0.215" y1="23.715" x2="1.109" y2="23.715" width="0.127" layer="16"/>
+<wire x1="-1.516" y1="19.465" x2="-0.166" y2="19.465" width="0.1524" layer="1"/>
+<wire x1="-1.516" y1="23.715" x2="-0.166" y2="23.715" width="0.1524" layer="1"/>
+<wire x1="-1.516" y1="23.715" x2="-2.1458" y2="23.0852" width="0.1524" layer="1"/>
+<wire x1="-2.1458" y1="23.0852" x2="-2.1458" y2="20.0948" width="0.1524" layer="1"/>
+<wire x1="-2.1458" y1="20.0948" x2="-1.516" y2="19.465" width="0.1524" layer="1"/>
+<wire x1="-0.166" y1="19.465" x2="0.249" y2="19.05" width="0.1524" layer="16"/>
+<wire x1="0.249" y1="19.05" x2="2.935" y2="19.05" width="0.1524" layer="16"/>
+<wire x1="-0.166" y1="23.715" x2="1.109" y2="23.715" width="0.127" layer="16"/>
 <wire x1="1.524" y1="24.13" x2="1.524" y2="26.035" width="0.127" layer="16"/>
 <wire x1="1.524" y1="26.035" x2="2.667" y2="27.178" width="0.127" layer="16"/>
 <wire x1="2.667" y1="27.178" x2="2.76" y2="27.178" width="0.127" layer="16"/>
@@ -3364,17 +3360,17 @@ design rules under a new name.</description>
 <wire x1="-4.2926" y1="20.7518" x2="-5.1562" y2="20.7518" width="0.127" layer="16"/>
 <wire x1="-6.8834" y1="19.0246" x2="-6.8834" y2="18.8722" width="0.127" layer="16"/>
 <wire x1="-5.1562" y1="20.7518" x2="-6.8834" y2="19.0246" width="0.127" layer="16"/>
-<wire x1="-1.4898625" y1="16.4189" x2="-2.0381" y2="16.9671375" width="0.127" layer="16"/>
+<wire x1="-2.2518625" y1="16.4189" x2="-2.5461" y2="16.7131375" width="0.127" layer="16"/>
 <wire x1="3.888" y1="16.383" x2="3.8521" y2="16.4189" width="0.127" layer="16"/>
-<wire x1="3.8521" y1="16.4189" x2="-1.4898625" y2="16.4189" width="0.127" layer="16"/>
-<wire x1="-2.0381" y1="16.9671375" x2="-2.0381" y2="18.5619" width="0.127" layer="16"/>
-<wire x1="-2.0381" y1="18.5619" x2="-1.135" y2="19.465" width="0.127" layer="16"/>
-<wire x1="-6.8834" y1="18.8722" x2="-6.985" y2="18.7706" width="0.1524" layer="16"/>
-<wire x1="-6.985" y1="18.7706" x2="-6.985" y2="16.383" width="0.1524" layer="16"/>
-<via x="-6.985" y="16.383" extent="1-16" drill="0.35"/>
-<wire x1="-6.985" y1="16.383" x2="-6.985" y2="18.161" width="0.1524" layer="1"/>
-<wire x1="-5.681" y1="19.465" x2="-6.985" y2="18.161" width="0.1524" layer="1"/>
-<wire x1="-5.681" y1="19.465" x2="-1.135" y2="19.465" width="0.1524" layer="1"/>
+<wire x1="3.8521" y1="16.4189" x2="-2.2518625" y2="16.4189" width="0.127" layer="16"/>
+<wire x1="-2.5461" y1="16.7131375" x2="-2.5461" y2="18.4349" width="0.127" layer="16"/>
+<wire x1="-2.5461" y1="18.4349" x2="-1.516" y2="19.465" width="0.127" layer="16"/>
+<wire x1="-6.8834" y1="18.8722" x2="-7.112" y2="18.6436" width="0.1524" layer="16"/>
+<wire x1="-7.112" y1="18.6436" x2="-7.112" y2="16.256" width="0.1524" layer="16"/>
+<via x="-7.112" y="16.256" extent="1-16" drill="0.35"/>
+<wire x1="-7.112" y1="16.256" x2="-7.112" y2="18.034" width="0.1524" layer="1"/>
+<wire x1="-5.681" y1="19.465" x2="-7.112" y2="18.034" width="0.1524" layer="1"/>
+<wire x1="-5.681" y1="19.465" x2="-1.516" y2="19.465" width="0.1524" layer="1"/>
 </signal>
 <signal name="V+">
 <contactref element="R11" pad="1"/>
@@ -3428,20 +3424,20 @@ design rules under a new name.</description>
 <wire x1="-2.794" y1="22.493" x2="-2.8588" y2="22.4282" width="0.254" layer="16"/>
 <wire x1="-2.7747125" y1="22.493" x2="-2.794" y2="22.493" width="0.254" layer="16"/>
 <contactref element="PWR" pad="3"/>
-<wire x1="-3.2258" y1="18.8722" x2="-2.794" y2="18.8722" width="0.127" layer="16"/>
-<wire x1="-4.2926" y1="18.8722" x2="-3.2258" y2="18.8722" width="0.127" layer="16"/>
-<wire x1="-2.7747125" y1="19.3232875" x2="-2.7747125" y2="22.493" width="0.127" layer="16"/>
-<wire x1="-3.2258" y1="18.8722" x2="-2.7747125" y2="19.3232875" width="0.127" layer="16"/>
+<wire x1="-2.7747125" y1="19.0692875" x2="-2.7747125" y2="22.493" width="0.127" layer="16"/>
 <wire x1="-8.114" y1="16.27" x2="-8.128" y2="16.256" width="0.1524" layer="16"/>
 <via x="-8.128" y="16.256" extent="1-16" drill="0.35"/>
 <wire x1="-8.128" y1="16.256" x2="-8.128" y2="32.512" width="0.1524" layer="1"/>
 <wire x1="-6.43" y1="34.21" x2="-8.128" y2="32.512" width="0.1524" layer="1"/>
 <wire x1="-6.43" y1="34.21" x2="-3.429" y2="34.21" width="0.1524" layer="1"/>
-<wire x1="-8.128" y1="16.256" x2="-7.62" y2="15.748" width="0.1524" layer="16"/>
-<wire x1="-7.62" y1="15.748" x2="-3.302" y2="15.748" width="0.1524" layer="16"/>
-<wire x1="-3.302" y1="15.748" x2="-2.54" y2="16.51" width="0.1524" layer="16"/>
-<wire x1="-2.54" y1="16.51" x2="-2.54" y2="18.6182" width="0.1524" layer="16"/>
-<wire x1="-2.54" y1="18.6182" x2="-2.794" y2="18.8722" width="0.1524" layer="16"/>
+<wire x1="-8.128" y1="16.256" x2="-7.493" y2="15.621" width="0.1524" layer="16"/>
+<wire x1="-7.493" y1="15.621" x2="-3.429" y2="15.621" width="0.1524" layer="16"/>
+<wire x1="-3.429" y1="15.621" x2="-2.921" y2="16.129" width="0.1524" layer="16"/>
+<wire x1="-2.921" y1="16.129" x2="-2.921" y2="18.1102" width="0.1524" layer="16"/>
+<wire x1="-2.9718" y1="18.8722" x2="-2.7747125" y2="19.0692875" width="0.127" layer="16"/>
+<wire x1="-4.2926" y1="18.8722" x2="-2.9718" y2="18.8722" width="0.127" layer="16"/>
+<wire x1="-4.2926" y1="18.8722" x2="-3.683" y2="18.8722" width="0.1524" layer="16"/>
+<wire x1="-3.683" y1="18.8722" x2="-2.921" y2="18.1102" width="0.1524" layer="16"/>
 </signal>
 <signal name="N$23">
 <contactref element="U1" pad="5"/>
@@ -3665,9 +3661,9 @@ design rules under a new name.</description>
 <contactref element="R8" pad="1"/>
 <contactref element="USB" pad="A6"/>
 <contactref element="USB" pad="B6"/>
-<wire x1="-1.135" y1="21.165" x2="-0.285" y2="22.015" width="0.1524" layer="1"/>
-<wire x1="-0.285" y1="22.015" x2="0.215" y2="22.015" width="0.1524" layer="1"/>
-<wire x1="0.215" y1="22.015" x2="1.441" y2="22.015" width="0.1524" layer="16"/>
+<wire x1="-1.516" y1="21.165" x2="-0.666" y2="22.015" width="0.1524" layer="1"/>
+<wire x1="-0.666" y1="22.015" x2="-0.166" y2="22.015" width="0.1524" layer="1"/>
+<wire x1="-0.166" y1="22.015" x2="1.441" y2="22.015" width="0.1524" layer="16"/>
 <wire x1="1.441" y1="22.015" x2="2.286" y2="22.86" width="0.1524" layer="16"/>
 <wire x1="2.286" y1="22.86" x2="2.96" y2="22.86" width="0.1524" layer="16"/>
 </signal>
@@ -3677,35 +3673,35 @@ design rules under a new name.</description>
 <wire x1="-5.9538375" y1="-2.06475" x2="-7.366" y2="-3.4769125" width="0.1016" layer="1"/>
 <wire x1="-7.366" y1="-3.4769125" x2="-7.366" y2="-3.556" width="0.1016" layer="1"/>
 <via x="-7.366" y="-3.556" extent="1-16" drill="0.2"/>
-<wire x1="-7.62" y1="14.483875" x2="-7.62" y2="15.113" width="0.1016" layer="16"/>
-<wire x1="-8.0756" y1="-1.7034" x2="-8.0756" y2="14.028275" width="0.1016" layer="16"/>
-<wire x1="-8.0756" y1="14.028275" x2="-7.62" y2="14.483875" width="0.1016" layer="16"/>
+<wire x1="-8.0756" y1="-1.7034" x2="-8.0756" y2="14.790275" width="0.1016" layer="16"/>
+<wire x1="-7.112" y1="15.113" x2="-7.752875" y2="15.113" width="0.1016" layer="16"/>
+<wire x1="-7.752875" y1="15.113" x2="-8.0756" y2="14.790275" width="0.1016" layer="16"/>
 <wire x1="-7.366" y1="-3.556" x2="-7.366" y2="-2.413" width="0.1016" layer="16"/>
 <wire x1="-7.366" y1="-2.413" x2="-8.0756" y2="-1.7034" width="0.1016" layer="16"/>
-<via x="-7.62" y="15.113" extent="1-16" drill="0.2"/>
+<via x="-7.112" y="15.113" extent="1-16" drill="0.2"/>
 <wire x1="4.66" y1="21.59" x2="6.35" y2="21.59" width="0.1524" layer="16"/>
 <via x="6.35" y="21.59" extent="1-16" drill="0.35"/>
 <wire x1="3.8244875" y1="14.605" x2="6.35" y2="17.1305125" width="0.127" layer="1"/>
 <wire x1="6.35" y1="17.1305125" x2="6.35" y2="21.59" width="0.127" layer="1"/>
-<wire x1="-7.62" y1="15.113" x2="0.508" y2="15.113" width="0.127" layer="1"/>
+<wire x1="-7.112" y1="15.113" x2="0.508" y2="15.113" width="0.127" layer="1"/>
 <wire x1="1.016" y1="14.605" x2="0.508" y2="15.113" width="0.127" layer="1"/>
 <wire x1="3.8244875" y1="14.605" x2="1.016" y2="14.605" width="0.127" layer="1"/>
 </signal>
 <signal name="N$47">
 <contactref element="R23" pad="2"/>
 <contactref element="USB" pad="A5"/>
-<wire x1="0.215" y1="22.865" x2="1.09206875" y2="22.865" width="0.1524" layer="16"/>
+<wire x1="-0.166" y1="22.865" x2="1.09206875" y2="22.865" width="0.1524" layer="16"/>
 <wire x1="2.35706875" y1="24.13" x2="1.09206875" y2="22.865" width="0.1524" layer="16"/>
 <wire x1="2.35706875" y1="24.13" x2="2.96" y2="24.13" width="0.1524" layer="16"/>
 </signal>
 <signal name="N$46">
 <contactref element="R24" pad="2"/>
 <contactref element="USB" pad="B5"/>
-<wire x1="-0.5291" y1="18.53899375" x2="-0.11500625" y2="18.1249" width="0.127" layer="16"/>
+<wire x1="-0.7831" y1="18.41199375" x2="-0.49600625" y2="18.1249" width="0.127" layer="16"/>
 <wire x1="3.7521" y1="18.3146125" x2="3.7521" y2="20.0393875" width="0.127" layer="16"/>
-<wire x1="-1.135" y1="20.315" x2="-0.5291" y2="19.7091" width="0.127" layer="16"/>
-<wire x1="-0.5291" y1="19.7091" x2="-0.5291" y2="18.53899375" width="0.127" layer="16"/>
-<wire x1="-0.11500625" y1="18.1249" x2="3.5623875" y2="18.1249" width="0.127" layer="16"/>
+<wire x1="-1.516" y1="20.315" x2="-0.7831" y2="19.5821" width="0.127" layer="16"/>
+<wire x1="-0.7831" y1="19.5821" x2="-0.7831" y2="18.41199375" width="0.127" layer="16"/>
+<wire x1="-0.49600625" y1="18.1249" x2="3.5623875" y2="18.1249" width="0.127" layer="16"/>
 <wire x1="3.5623875" y1="18.1249" x2="3.7521" y2="18.3146125" width="0.127" layer="16"/>
 <wire x1="3.7521" y1="20.0393875" x2="3.4714875" y2="20.32" width="0.127" layer="16"/>
 <wire x1="3.4714875" y1="20.32" x2="2.96" y2="20.32" width="0.127" layer="16"/>
@@ -3714,11 +3710,13 @@ design rules under a new name.</description>
 <contactref element="USB" pad="B7"/>
 <contactref element="R15" pad="1"/>
 <contactref element="USB" pad="A7"/>
-<wire x1="-1.135" y1="22.015" x2="-0.762" y2="22.015" width="0.1524" layer="16"/>
-<wire x1="0.088" y1="21.165" x2="-0.762" y2="22.015" width="0.1524" layer="16"/>
-<wire x1="0.088" y1="21.165" x2="0.215" y2="21.165" width="0.1524" layer="16"/>
+<wire x1="-1.516" y1="22.015" x2="-1.143" y2="22.015" width="0.1524" layer="16"/>
+<wire x1="0.088" y1="21.165" x2="-0.166" y2="21.419" width="0.1524" layer="16"/>
+<wire x1="-0.166" y1="21.165" x2="-0.293" y2="21.165" width="0.1524" layer="16"/>
+<wire x1="-0.293" y1="21.165" x2="-1.143" y2="22.015" width="0.1524" layer="16"/>
+<wire x1="-0.166" y1="21.419" x2="-0.166" y2="21.165" width="0.1524" layer="16"/>
 <wire x1="2.164" y1="21.59" x2="1.739" y2="21.165" width="0.1524" layer="16"/>
-<wire x1="0.215" y1="21.165" x2="1.739" y2="21.165" width="0.1524" layer="16"/>
+<wire x1="-0.166" y1="21.165" x2="1.739" y2="21.165" width="0.1524" layer="16"/>
 <wire x1="2.164" y1="21.59" x2="2.96" y2="21.59" width="0.1524" layer="16"/>
 </signal>
 </signals>
