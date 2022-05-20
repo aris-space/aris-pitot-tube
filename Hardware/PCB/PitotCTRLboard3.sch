@@ -12180,6 +12180,9 @@ Source: &lt;a href="http://www.tag-connect.com/Materials/TC2030-IDC.pdf"&gt; Dat
 <wire x1="30.48" y1="-45.72" x2="30.48" y2="-48.26" width="0.1524" layer="91"/>
 <junction x="30.48" y="-45.72"/>
 <pinref part="GND3" gate="1" pin="GND"/>
+<pinref part="TEMP" gate="G$1" pin="ADDR"/>
+<wire x1="27.94" y1="-43.18" x2="30.48" y2="-43.18" width="0.1524" layer="91"/>
+<junction x="30.48" y="-43.18"/>
 </segment>
 <segment>
 <pinref part="TEMP" gate="G$1" pin="GND_7"/>
