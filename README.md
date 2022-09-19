@@ -18,3 +18,7 @@ Repo structure:
 `Hardware` contains all step files and technical drawings to manufacture and assemble the structural components as well as the EAGLE files of the electronics hardware  
 `Core/Inc` contains headers of project specific code  
 `Core/Src` contains source of project specific code
+`Python` contains python code for analysis (including supersonic flight data from SPAC2022, HELVETIA)
+<p align="center">
+  <img src="Python/helvetia_spac2022.png" />
+</p>
